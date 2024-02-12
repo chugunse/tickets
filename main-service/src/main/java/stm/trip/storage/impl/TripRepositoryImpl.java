@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import stm.carrier.model.Carrier;
+import stm.route.model.Point;
 import stm.route.model.Route;
 import stm.trip.model.Trip;
 import stm.trip.storage.TripRepository;
@@ -68,11 +69,13 @@ public class TripRepositoryImpl implements TripRepository {
 
     @Override
     public Trip getById(int id) {
-        final String sqlQuery ="SELECT t.id as tId, t.title, t.date_time, t.price, t.amount, " +
-                "t.route_id, r.route_number, r.destination_point, r.departure_point, r.duration, " +
-                "c.id as cId, c.company, c.phone " +
+        final String sqlQuery ="SELECT t.id as  tId, t.title, t.date_time, t.price,t. amount, " +
+                "t.route_id, r.route_number, fp.id fpi, fp.title fpt, sp.id spi, sp.title spt, r.duration, " +
+                "c.id as  cId, c.company, c.phone " +
                 "from trip as t " +
                 "join route r on r.id = t.route_id " +
+                "join point fp on fp.id = r.departure_point_id " +
+                "join point sp on sp.id = r.destination_point_id " +
                 "join carrier c on c.id = r.carrier_id " +
                 "where t.id = ?";
         return jdbcTemplate.queryForObject(sqlQuery, this::makeTrip, id);
@@ -101,11 +104,13 @@ public class TripRepositoryImpl implements TripRepository {
 
     @Override
     public List<Trip> getAll() {
-        final String sqlQuery ="SELECT t.id as tId, t.title, t.date_time, t.price, t.amount, " +
-                "t.route_id, r.route_number, r.destination_point, r.departure_point, r.duration, " +
-                "c.id as cId, c.company, c.phone " +
+        final String sqlQuery ="SELECT t.id as  tId, t.title, t.date_time, t.price,t. amount, " +
+                "t.route_id, r.route_number, fp.id fpi, fp.title fpt, sp.id spi, sp.title spt, r.duration, " +
+                "c.id as  cId, c.company, c.phone " +
                 "from trip as t " +
                 "join route r on r.id = t.route_id " +
+                "join point fp on fp.id = r.departure_point_id " +
+                "join point sp on sp.id = r.destination_point_id " +
                 "join carrier c on c.id = r.carrier_id";
         return jdbcTemplate.query(sqlQuery, this::makeTrip);
     }
@@ -125,8 +130,8 @@ public class TripRepositoryImpl implements TripRepository {
         Route route = Route.builder()
                 .id(resultSet.getInt("route_id"))
                 .routeNumber(resultSet.getString("route_number"))
-                .departurePoint(resultSet.getString("departure_point"))
-                .destinationPoint(resultSet.getString("destination_point"))
+                .departurePoint(new Point(resultSet.getInt("fpi"), resultSet.getString("fpt")))
+                .destinationPoint(new Point(resultSet.getInt("spi"), resultSet.getString("spt")))
                 .duration(resultSet.getTime("duration").toLocalTime())
                 .carrier(carrier)
                 .build();

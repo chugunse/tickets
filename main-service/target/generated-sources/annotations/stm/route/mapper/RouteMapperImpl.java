@@ -14,7 +14,7 @@ import stm.route.model.Route;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-02-12T12:23:57+0300",
+    date = "2024-02-12T14:37:41+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.18 (Amazon.com Inc.)"
 )
 @Component
@@ -22,6 +22,8 @@ public class RouteMapperImpl implements RouteMapper {
 
     @Autowired
     private CarrierMapper carrierMapper;
+    @Autowired
+    private PointMapper pointMapper;
     private final DateTimeFormatter dateTimeFormatter_HH_mm_168697690 = DateTimeFormatter.ofPattern( "HH:mm" );
 
     @Override
@@ -36,8 +38,6 @@ public class RouteMapperImpl implements RouteMapper {
             route.duration( LocalTime.parse( dto.getDuration(), dateTimeFormatter_HH_mm_168697690 ) );
         }
         route.routeNumber( dto.getRouteNumber() );
-        route.departurePoint( dto.getDeparturePoint() );
-        route.destinationPoint( dto.getDestinationPoint() );
 
         return route.build();
     }
@@ -55,8 +55,8 @@ public class RouteMapperImpl implements RouteMapper {
         }
         routeFullDto.setId( model.getId() );
         routeFullDto.setRouteNumber( model.getRouteNumber() );
-        routeFullDto.setDeparturePoint( model.getDeparturePoint() );
-        routeFullDto.setDestinationPoint( model.getDestinationPoint() );
+        routeFullDto.setDeparturePoint( pointMapper.toDto( model.getDeparturePoint() ) );
+        routeFullDto.setDestinationPoint( pointMapper.toDto( model.getDestinationPoint() ) );
         routeFullDto.setCarrier( carrierMapper.toCarrierFullDto( model.getCarrier() ) );
 
         return routeFullDto;
@@ -86,8 +86,8 @@ public class RouteMapperImpl implements RouteMapper {
 
         route.id( dto.getId() );
         route.routeNumber( dto.getRouteNumber() );
-        route.departurePoint( dto.getDeparturePoint() );
-        route.destinationPoint( dto.getDestinationPoint() );
+        route.departurePoint( pointMapper.toModel( dto.getDeparturePoint() ) );
+        route.destinationPoint( pointMapper.toModel( dto.getDestinationPoint() ) );
         route.carrier( carrierMapper.toCarrierModel( dto.getCarrier() ) );
         if ( dto.getDuration() != null ) {
             route.duration( LocalTime.parse( dto.getDuration() ) );

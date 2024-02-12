@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 public class RouteNewDto {
     private String routeNumber;
-    private String departurePoint;
-    private String destinationPoint;
+    private int departurePoint;
+    private int destinationPoint;
     private int carrierId;
     private String duration;
 }

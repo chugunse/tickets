@@ -12,8 +12,8 @@ import stm.carrier.model.Carrier;
 public class RouteFullDto {
     private int id;
     private String routeNumber;
-    private String departurePoint;
-    private String destinationPoint;
+    private PointDto departurePoint;
+    private PointDto destinationPoint;
     private CarrierFullDto carrier;
     private String duration;
 }

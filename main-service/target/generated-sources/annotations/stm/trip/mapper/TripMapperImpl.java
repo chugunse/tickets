@@ -8,7 +8,9 @@ import javax.annotation.Generated;
 import org.springframework.stereotype.Component;
 import stm.carrier.dto.CarrierDto;
 import stm.carrier.model.Carrier;
+import stm.route.dto.PointDto;
 import stm.route.dto.RoutePublicDto;
+import stm.route.model.Point;
 import stm.route.model.Route;
 import stm.trip.dto.TripFullDto;
 import stm.trip.dto.TripNewDto;
@@ -17,7 +19,7 @@ import stm.trip.model.Trip;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-02-12T12:23:57+0300",
+    date = "2024-02-12T14:37:41+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.18 (Amazon.com Inc.)"
 )
 @Component
@@ -95,6 +97,19 @@ public class TripMapperImpl implements TripMapper {
         return tripPublicDto;
     }
 
+    protected PointDto pointToPointDto(Point point) {
+        if ( point == null ) {
+            return null;
+        }
+
+        PointDto pointDto = new PointDto();
+
+        pointDto.setId( point.getId() );
+        pointDto.setTitle( point.getTitle() );
+
+        return pointDto;
+    }
+
     protected CarrierDto carrierToCarrierDto(Carrier carrier) {
         if ( carrier == null ) {
             return null;
@@ -116,8 +131,8 @@ public class TripMapperImpl implements TripMapper {
         RoutePublicDto routePublicDto = new RoutePublicDto();
 
         routePublicDto.setRouteNumber( route.getRouteNumber() );
-        routePublicDto.setDeparturePoint( route.getDeparturePoint() );
-        routePublicDto.setDestinationPoint( route.getDestinationPoint() );
+        routePublicDto.setDeparturePoint( pointToPointDto( route.getDeparturePoint() ) );
+        routePublicDto.setDestinationPoint( pointToPointDto( route.getDestinationPoint() ) );
         routePublicDto.setCarrier( carrierToCarrierDto( route.getCarrier() ) );
         if ( route.getDuration() != null ) {
             routePublicDto.setDuration( DateTimeFormatter.ISO_LOCAL_TIME.format( route.getDuration() ) );
