@@ -1,5 +1,6 @@
 package stm.route.service;
 
+import stm.route.dto.PointDto;
 import stm.route.dto.RouteNewDto;
 import stm.route.dto.RouteFullDto;
 import stm.route.dto.RoutePatchDto;
@@ -17,4 +18,8 @@ public interface RouteService {
     List<RouteFullDto> getAllRoutes();
 
     RouteFullDto patchRoute(int id, RoutePatchDto dto);
+
+    PointDto addPoint(PointDto dto);
+
+    List<PointDto> getAllPoints();
 }

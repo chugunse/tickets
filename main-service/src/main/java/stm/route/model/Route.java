@@ -13,8 +13,8 @@ import java.time.LocalTime;
 public class Route {
     private int id;
     private String routeNumber;
-    private String departurePoint;
-    private String destinationPoint;
+    private Point departurePoint;
+    private Point destinationPoint;
     private Carrier carrier;
     private LocalTime duration;
 }

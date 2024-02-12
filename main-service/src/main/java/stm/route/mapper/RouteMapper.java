@@ -9,9 +9,11 @@ import stm.route.model.Route;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = CarrierMapper.class)
+@Mapper(componentModel = "spring", uses = {CarrierMapper.class, PointMapper.class})
 public interface RouteMapper {
     @Mapping(target = "duration", dateFormat = "HH:mm")
+    @Mapping(target = "departurePoint", ignore = true)
+    @Mapping(target = "destinationPoint", ignore = true)
     Route toRouteModel(RouteNewDto dto);
     @Mapping(target = "duration", dateFormat = "HH:mm")
     RouteFullDto toRouteFullDto(Route model);

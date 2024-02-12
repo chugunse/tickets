@@ -10,8 +10,8 @@ import stm.carrier.dto.CarrierDto;
 @Setter
 public class RoutePublicDto {
     private String routeNumber;
-    private String departurePoint;
-    private String destinationPoint;
+    private PointDto departurePoint;
+    private PointDto destinationPoint;
     private CarrierDto carrier;
     private String duration;
 }

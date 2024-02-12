@@ -1,5 +1,6 @@
 package stm.route.storage;
 
+import stm.route.model.Point;
 import stm.route.model.Route;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface RouteRepository {
     List<Route> getAll();
 
     Route update(Route route);
+
+    Point addPoint(Point toModel);
+
+    List<Point> getAllPoints();
 }
