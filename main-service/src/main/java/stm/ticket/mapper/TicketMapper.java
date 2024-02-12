@@ -7,10 +7,10 @@ import stm.ticket.dto.TicketDto;
 import stm.ticket.dto.TicketNewDto;
 import stm.ticket.model.Ticket;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = RouteMapper.class)
 public interface TicketMapper {
-    @Mapping(target = "route", ignore = true)
-    @Mapping(target = "dateTime", dateFormat = "yyyy-MM-dd HH:mm")
-    Ticket toModel(TicketNewDto dto);
     TicketDto toTicketDto(Ticket model);
+    List<TicketDto> toTicketDtoList(List<Ticket> list);
 }

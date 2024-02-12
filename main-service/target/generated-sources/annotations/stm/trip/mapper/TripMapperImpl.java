@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 import stm.carrier.dto.CarrierDto;
 import stm.carrier.model.Carrier;
@@ -19,7 +19,7 @@ import stm.trip.model.Trip;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-02-12T14:37:41+0300",
+    date = "2024-02-12T18:55:33+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.18 (Amazon.com Inc.)"
 )
 @Component
@@ -33,16 +33,16 @@ public class TripMapperImpl implements TripMapper {
             return null;
         }
 
-        Trip trip = new Trip();
+        Trip.TripBuilder trip = Trip.builder();
 
         if ( dto.getDateTime() != null ) {
-            trip.setDateTime( LocalDateTime.parse( dto.getDateTime(), dateTimeFormatter_yyyy_MM_dd_HH_mm_01172057030 ) );
+            trip.dateTime( LocalDateTime.parse( dto.getDateTime(), dateTimeFormatter_yyyy_MM_dd_HH_mm_01172057030 ) );
         }
-        trip.setTitle( dto.getTitle() );
-        trip.setPrice( dto.getPrice() );
-        trip.setAmount( dto.getAmount() );
+        trip.title( dto.getTitle() );
+        trip.price( dto.getPrice() );
+        trip.amount( dto.getAmount() );
 
-        return trip;
+        return trip.build();
     }
 
     @Override

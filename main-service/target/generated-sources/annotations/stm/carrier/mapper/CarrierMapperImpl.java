@@ -2,7 +2,7 @@ package stm.carrier.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 import stm.carrier.dto.CarrierDto;
 import stm.carrier.dto.CarrierFullDto;
@@ -10,7 +10,7 @@ import stm.carrier.model.Carrier;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-02-12T14:37:41+0300",
+    date = "2024-02-12T18:55:32+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.18 (Amazon.com Inc.)"
 )
 @Component

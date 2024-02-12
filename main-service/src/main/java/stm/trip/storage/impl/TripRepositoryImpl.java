@@ -116,12 +116,6 @@ public class TripRepositoryImpl implements TripRepository {
     }
 
     private Trip makeTrip(ResultSet resultSet, int rowNum) throws SQLException {
-        Trip trip = new Trip();
-        trip.setId(resultSet.getInt("tId"));
-        trip.setTitle(resultSet.getString("title"));
-        trip.setDateTime(resultSet.getObject("date_time", LocalDateTime.class));
-        trip.setPrice(resultSet.getInt("price"));
-        trip.setAmount(resultSet.getInt("amount"));
         Carrier carrier = Carrier.builder()
                 .id(resultSet.getInt("cId"))
                 .company(resultSet.getString("company"))
@@ -135,7 +129,13 @@ public class TripRepositoryImpl implements TripRepository {
                 .duration(resultSet.getTime("duration").toLocalTime())
                 .carrier(carrier)
                 .build();
-        trip.setRoute(route);
-        return trip;
+        return Trip.builder()
+                .id(resultSet.getInt("tId"))
+                .title(resultSet.getString("title"))
+                .dateTime(resultSet.getObject("date_time", LocalDateTime.class))
+                .price(resultSet.getInt("price"))
+                .amount(resultSet.getInt("amount"))
+                .route(route)
+                .build();
     }
 }
