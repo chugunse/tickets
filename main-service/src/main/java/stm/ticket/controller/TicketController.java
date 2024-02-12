@@ -1,6 +1,7 @@
 package stm.ticket.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,22 +18,27 @@ import static stm.util.Constants.DATE_TIME_PATTERN;
 @RestController
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
+@Slf4j
 public class TicketController {
     private final TicketService ticketService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public void getAllTickets(@RequestParam(required = false)
-                                             @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeStart,
+    public List<TicketDto> getAllTickets(@RequestParam(required = false)
+                              @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeStart,
                                          @RequestParam(required = false)
-                                         @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
+                              @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
+                                         @RequestParam(required = false) Integer departurePointId,
                                          @RequestParam(required = false) String departurePoint,
+                                         @RequestParam(required = false) Integer destinationPointId,
                                          @RequestParam(required = false) String destinationPoint,
                                          @RequestParam(required = false) String carrier,
                                          @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                                         @Positive @RequestParam(defaultValue = "10") Integer size){
-        ticketService.getAllTickets(rangeStart, rangeEnd, departurePoint, destinationPoint, carrier, from, size);
+                                         @Positive @RequestParam(defaultValue = "10") Integer size) {
+        log.info("запрос доступных билетов");
+        return ticketService.getAllTickets(rangeStart, rangeEnd,
+                departurePointId, departurePoint,
+                destinationPointId, destinationPoint,
+                carrier, from, size);
     }
-
-//    @GetMapping
 }
