@@ -41,6 +41,4 @@ public class TicketController {
                 destinationPointId, destinationPoint,
                 carrier, from, size);
     }
-
-//    @GetMapping
 }
