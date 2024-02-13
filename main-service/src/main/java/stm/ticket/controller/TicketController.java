@@ -41,4 +41,16 @@ public class TicketController {
                 destinationPointId, destinationPoint,
                 carrier, from, size);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TicketDto buyTicket(@RequestParam Integer userId, Integer ticketId){
+        return ticketService.buyTicket(userId, ticketId);
+    }
+
+    @GetMapping("/user")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TicketDto> getUserTickets(@RequestParam Integer id){
+        return ticketService.getUserTickets(id);
+    }
 }

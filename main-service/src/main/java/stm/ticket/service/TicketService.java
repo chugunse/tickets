@@ -14,4 +14,8 @@ public interface TicketService {
                                   String carrier,
                                   Integer from,
                                   Integer size);
+
+    TicketDto buyTicket(Integer userId, Integer ticketId);
+
+    List<TicketDto> getUserTickets(Integer id);
 }

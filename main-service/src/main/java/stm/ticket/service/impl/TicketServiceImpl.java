@@ -1,8 +1,10 @@
 package stm.ticket.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import stm.exception.model.BadRequestException;
+import stm.exception.model.ResourceNotFoundException;
 import stm.route.storage.RouteRepository;
 import stm.ticket.dto.TicketDto;
 import stm.ticket.mapper.TicketMapper;
@@ -39,5 +41,26 @@ public class TicketServiceImpl implements TicketService {
                 carrier, from, size);
         System.out.println(tickets);
         return ticketMapper.toTicketDtoList(tickets);
+    }
+
+    @Override
+    public TicketDto buyTicket(Integer userId, Integer ticketId) {
+        Ticket ticket;
+        try {
+            ticket = ticketRepository.getTicket(ticketId);
+        } catch (EmptyResultDataAccessException exception) {
+            throw new ResourceNotFoundException("билет не найден либо продан");
+        }
+        ticketRepository.ticketSetUser(ticketId, userId);
+        return ticketMapper.toTicketDto(ticket);
+    }
+
+    @Override
+    public List<TicketDto> getUserTickets(Integer id) {
+        try {
+            return ticketMapper.toTicketDtoList(ticketRepository.getUserTickets(id));
+        } catch (EmptyResultDataAccessException exception) {
+            throw new ResourceNotFoundException("у пользователя нет купленных билетов");
+        }
     }
 }
