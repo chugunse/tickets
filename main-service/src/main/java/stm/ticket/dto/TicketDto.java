@@ -5,12 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import stm.trip.dto.TripFullDto;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class TicketDto {
+public class TicketDto implements Serializable {
     private int id;
     private TripFullDto trip;
     private int placeNumber;

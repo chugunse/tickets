@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @Builder
-public class Carrier {
+public class Carrier implements Serializable {
     private int id;
     private final String company;
     private final String phone;

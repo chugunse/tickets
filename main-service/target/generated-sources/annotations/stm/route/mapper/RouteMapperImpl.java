@@ -14,7 +14,7 @@ import stm.route.model.Route;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-02-12T18:55:32+0300",
+    date = "2024-02-13T19:46:29+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.18 (Amazon.com Inc.)"
 )
 @Component

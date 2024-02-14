@@ -1,6 +1,7 @@
 package stm.route.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import stm.carrier.dto.CarrierFullDto;
@@ -19,6 +20,7 @@ import stm.route.model.Route;
 import stm.route.service.RouteService;
 import stm.route.storage.RouteRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -109,7 +111,9 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
+    @Cacheable(value = "RouteService::getAllPoints")
     public List<PointDto> getAllPoints() {
+        System.out.println(LocalDateTime.now());
         List<Point> list = routeRepository.getAllPoints();
         return pointMapper.toDtoList(list);
     }
