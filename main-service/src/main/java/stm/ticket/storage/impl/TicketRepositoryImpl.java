@@ -115,4 +115,48 @@ public class TicketRepositoryImpl implements TicketRepository {
                 .trip(trip)
                 .build();
     }
+
+    @Override
+    public Ticket getTicket(Integer id){
+        String sqlQuery = "select ticket.id as ticketId, ticket.place_number as tickePlaceN, " +
+                "trip.id as tripId, trip.title as tripTitle, trip.date_time as tripTime, trip.price as tripPrice, " +
+                "trip.amount as tripAmount," +
+                "route.id as routeId, route.route_number as routeNumber, route.duration as RouteDuration, " +
+                "carrier.id as carrierId, carrier.company as carrierCompany, carrier.phone as carrierPhone, " +
+                "fp.id as fpi, fp.title as fpt, " +
+                "sp.id as spi, sp.title as spt " +
+                "from ticket " +
+                "join trip on trip.id = ticket.trip_id " +
+                "join route on route.id = trip.route_id " +
+                "join carrier on carrier.id =route.carrier_id " +
+                "join point fp on fp.id = route.departure_point_id " +
+                "join point sp on sp.id = route.destination_point_id " +
+                "where ticket.id = ? and ticket.user_id is null";
+        return jdbcTemplate.queryForObject(sqlQuery, this::makeTicket, id);
+    }
+
+    @Override
+    public void ticketSetUser(Integer ticketId, Integer userId){
+        final String sqlQuery = "update ticket set user_id = ? where id = ?";
+        jdbcTemplate.update(sqlQuery, userId, ticketId);
+    }
+
+    @Override
+    public List<Ticket> getUserTickets(Integer id) {
+        String sqlQuery = "select ticket.id as ticketId, ticket.place_number as tickePlaceN, " +
+                "trip.id as tripId, trip.title as tripTitle, trip.date_time as tripTime, trip.price as tripPrice, " +
+                "trip.amount as tripAmount," +
+                "route.id as routeId, route.route_number as routeNumber, route.duration as RouteDuration, " +
+                "carrier.id as carrierId, carrier.company as carrierCompany, carrier.phone as carrierPhone, " +
+                "fp.id as fpi, fp.title as fpt, " +
+                "sp.id as spi, sp.title as spt " +
+                "from ticket " +
+                "join trip on trip.id = ticket.trip_id " +
+                "join route on route.id = trip.route_id " +
+                "join carrier on carrier.id =route.carrier_id " +
+                "join point fp on fp.id = route.departure_point_id " +
+                "join point sp on sp.id = route.destination_point_id " +
+                "where ticket.user_id = ?";
+        return jdbcTemplate.query(sqlQuery, this::makeTicket, id);
+    }
 }

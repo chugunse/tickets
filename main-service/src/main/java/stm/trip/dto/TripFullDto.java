@@ -5,10 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import stm.route.model.Route;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @Setter
 @Getter
-public class TripFullDto {
+public class TripFullDto implements Serializable {
     private int id;
     private String title;
     private Route route;
