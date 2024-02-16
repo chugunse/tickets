@@ -113,7 +113,6 @@ public class RouteServiceImpl implements RouteService {
     @Override
     @Cacheable(value = "RouteService::getAllPoints")
     public List<PointDto> getAllPoints() {
-        System.out.println(LocalDateTime.now());
         List<Point> list = routeRepository.getAllPoints();
         return pointMapper.toDtoList(list);
     }

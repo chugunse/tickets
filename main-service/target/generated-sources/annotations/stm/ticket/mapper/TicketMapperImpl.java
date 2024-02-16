@@ -3,7 +3,7 @@ package stm.ticket.mapper;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.processing.Generated;
+import javax.annotation.Generated;
 import org.springframework.stereotype.Component;
 import stm.ticket.dto.TicketDto;
 import stm.ticket.model.Ticket;
@@ -12,7 +12,7 @@ import stm.trip.model.Trip;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-02-13T19:46:29+0300",
+    date = "2024-02-16T22:31:01+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.18 (Amazon.com Inc.)"
 )
 @Component

@@ -2,6 +2,14 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/main-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/main-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solds-stats/kafka-consumer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solds-stats/solds-stats-dto/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solds-stats/solds-stats-dto/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solds-stats/solds-stats-post/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solds-stats/solds-stats-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solds-stats/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/solds-stats/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

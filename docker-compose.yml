@@ -1,6 +1,7 @@
-version: '3.1'
+version: '3.7'
+
 services:
-  ewm-service:
+  ticket-service:
     build: main-service
     image: main-service
     container_name: main-service
@@ -8,10 +9,16 @@ services:
       - "8080:8080"
     depends_on:
       - tickets-db
+      - kafka
+      - redis
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://tickets-db:5432/main-service-db
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+      - SPRING_REDIS_DATABASE=0
 
   tickets-db:
     image: postgres:14-alpine
@@ -23,8 +30,57 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_DB=main-service-db
 
+  solds-db:
+    image: postgres:14-alpine
+    container_name: solds-db
+    ports:
+      - "6541:5432"
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=solds-db
+
   redis:
     image: redis:latest
     container_name: redis
     ports:
       - "6379:6379"
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://host.docker.internal:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  solds-stats-service:
+    build: solds-stats/solds-stats-service
+    image: solds-stats-service
+    container_name: solds-stats
+    depends_on:
+      - solds-db
+      - kafka
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://solds-db:5432/solds-db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092

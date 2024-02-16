@@ -1,11 +1,15 @@
 package stm.ticket.service.impl;
 
+import dto.TicketSaveDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import stm.exception.model.BadRequestException;
 import stm.exception.model.ResourceNotFoundException;
+import stm.kafka.KafkaProducer;
 import stm.ticket.dto.TicketDto;
 import stm.ticket.mapper.TicketMapper;
 import stm.ticket.model.Ticket;
@@ -13,11 +17,8 @@ import stm.ticket.service.TicketService;
 import stm.ticket.storage.TicketRepository;
 import stm.util.Constants;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,8 @@ public class TicketServiceImpl implements TicketService {
     private final TicketMapper ticketMapper;
 
     private final RedisTemplate<String, List<TicketDto>> redisTemplate;
+
+    private final KafkaProducer kafkaProducer;
 
     @Override
     public List<TicketDto> getAllTickets(LocalDateTime rangeStart, LocalDateTime rangeEnd,
@@ -50,6 +53,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @CachePut(value = "allTickets" + "#ticketId", key = "#ticketId")
     public TicketDto buyTicket(Integer userId, Integer ticketId) {
         Ticket ticket;
         try {
@@ -58,30 +62,28 @@ public class TicketServiceImpl implements TicketService {
             throw new ResourceNotFoundException("билет не найден либо продан");
         }
         ticketRepository.ticketSetUser(ticketId, userId);
-        TicketDto ticketDto = ticketMapper.toTicketDto(ticket);
-        List<TicketDto> list = new ArrayList<>();
-        try {
-            list.addAll(Objects.requireNonNull(redisTemplate.opsForValue().get(CASH_USER_TICKETS + userId)));
-            System.out.println(list);
-        } catch (NullPointerException ignored) {
-        }
-        list.add(ticketDto);
-        redisTemplate.opsForValue().set(CASH_USER_TICKETS + userId, list, Duration.ofMinutes(1));
-        return ticketDto;
+        kafkaProducer.send(TicketSaveDto.builder()
+                .id((long) ticket.getId())
+                .buyersFullName(userId.toString())
+                .placeNumber(ticket.getPlaceNumber())
+                .tripTitle(ticket.getTrip().getTitle())
+                .routeNumber(ticket.getTrip().getRoute().getRouteNumber())
+                .departurePoint(ticket.getTrip().getRoute().getDeparturePoint().getTitle())
+                .destinationPoint(ticket.getTrip().getRoute().getDestinationPoint().getTitle())
+                .dateTime(ticket.getTrip().getDateTime())
+                        .price(ticket.getTrip().getPrice())
+                .carrier(ticket.getTrip().getRoute().getCarrier().getCompany())
+                .timestamp(LocalDateTime.now())
+                .build());
+        return ticketMapper.toTicketDto(ticket);
     }
 
     @Override
+    @Cacheable(value = "allTickets" + "#id", unless = "#result.size() == 0")
     public List<TicketDto> getUserTickets(Integer id) {
-        List<TicketDto> list;
         try {
-            list = new ArrayList<>(Objects.requireNonNull(redisTemplate.opsForValue().get(CASH_USER_TICKETS + id)));
-            return list;
-        } catch (NullPointerException ignored) {
-        }
-        try {
-            list = ticketMapper.toTicketDtoList(ticketRepository.getUserTickets(id));
-            redisTemplate.opsForValue().set(CASH_USER_TICKETS + id, list, Duration.ofMinutes(1));
-            return list;
+            System.out.println(LocalDateTime.now());
+            return ticketMapper.toTicketDtoList(ticketRepository.getUserTickets(id));
         } catch (EmptyResultDataAccessException exception) {
             throw new ResourceNotFoundException("у пользователя нет купленных билетов");
         }

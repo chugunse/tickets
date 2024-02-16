@@ -8,7 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
       </profile>
-      <profile name="Annotation profile for tickets-service" enabled="true">
+      <profile name="Annotation profile for tickets" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -18,14 +18,25 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
         </processorPath>
+        <module name="solds-stats-dto" />
+        <module name="solds-stats-service" />
         <module name="main-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="kafka-consumer" target="1.8" />
+      <module name="solds-stats-post" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="kafka-consumer" options="-parameters" />
       <module name="main-service" options="-parameters" />
-      <module name="tickets" options="-parameters" />
+      <module name="solds-stats" options="" />
+      <module name="solds-stats-dto" options="-parameters" />
+      <module name="solds-stats-post" options="-parameters" />
+      <module name="solds-stats-service" options="-parameters" />
+      <module name="tickets" options="" />
     </option>
   </component>
 </project>
