@@ -18,5 +18,6 @@ public interface CarrierMapper {
     List<CarrierFullDto> toCarrierFullDtoList(List<Carrier> list);
 
     CarrierFullDto toCarrierFullDto(Carrier carrier);
+
     Carrier toCarrierModel(CarrierFullDto dto);
 }

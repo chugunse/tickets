@@ -38,7 +38,7 @@ public class CarrierServiceImpl implements CarrierService {
     public void deleteCarrierById(int id) {
         try {
             carrierRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException exception){
+        } catch (EmptyResultDataAccessException exception) {
             throw new ResourceNotFoundException("компания с id = " + id + " не найдена");
         }
     }

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import stm.carrier.dto.CarrierFullDto;
-import stm.carrier.model.Carrier;
 
 @NoArgsConstructor
 @Getter

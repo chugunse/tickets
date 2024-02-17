@@ -15,6 +15,7 @@ public interface TripService {
     TripFullDto getTripById(int id);
 
     List<TripFullDto> getAllTrips();
+
     List<TripPublicDto> getAllTripsToPublic();
 
     TripFullDto updateTrip(TripUpdateDto dto, int id);

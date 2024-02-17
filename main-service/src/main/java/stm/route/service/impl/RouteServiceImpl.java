@@ -10,8 +10,8 @@ import stm.carrier.model.Carrier;
 import stm.carrier.storage.CarrierRepository;
 import stm.exception.model.ResourceNotFoundException;
 import stm.route.dto.PointDto;
-import stm.route.dto.RouteNewDto;
 import stm.route.dto.RouteFullDto;
+import stm.route.dto.RouteNewDto;
 import stm.route.dto.RoutePatchDto;
 import stm.route.mapper.PointMapper;
 import stm.route.mapper.RouteMapper;
@@ -20,7 +20,6 @@ import stm.route.model.Route;
 import stm.route.service.RouteService;
 import stm.route.storage.RouteRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,7 +45,7 @@ public class RouteServiceImpl implements RouteService {
         }
         List<PointDto> points = getAllPoints();
         Map<Integer, PointDto> map = points.stream().collect(Collectors.toMap(PointDto::getId, pointDto -> pointDto));
-        if (!map.containsKey(dto.getDeparturePoint()) || !map.containsKey(dto.getDestinationPoint())){
+        if (!map.containsKey(dto.getDeparturePoint()) || !map.containsKey(dto.getDestinationPoint())) {
             throw new ResourceNotFoundException("пункт отправления или назначения не найден");
         }
         Route route = routeMapper.toRouteModel(dto);
@@ -86,8 +85,8 @@ public class RouteServiceImpl implements RouteService {
                 throw new ResourceNotFoundException("пункт отправления с id= " + dto.getDeparturePoint() + "не найден");
             }
         }
-        if (dto.getDestinationPoint() != null){
-            if (map.containsKey(dto.getDestinationPoint())){
+        if (dto.getDestinationPoint() != null) {
+            if (map.containsKey(dto.getDestinationPoint())) {
                 old.setDestinationPoint(map.get(dto.getDestinationPoint()));
             } else {
                 throw new ResourceNotFoundException("пункт назначения с id= " + dto.getDeparturePoint() + "не найден");

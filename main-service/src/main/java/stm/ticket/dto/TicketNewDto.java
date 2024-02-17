@@ -3,9 +3,6 @@ package stm.ticket.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import stm.route.model.Route;
-
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter

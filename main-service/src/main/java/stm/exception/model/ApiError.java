@@ -1,6 +1,8 @@
 package stm.exception.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 import stm.util.Constants;
 

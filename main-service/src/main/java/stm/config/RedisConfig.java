@@ -13,6 +13,7 @@ import java.util.List;
 public class RedisConfig {
     @Resource
     private RedisConnectionFactory redisConnectionFactory;
+
     @Bean
     public RedisTemplate<String, List<TicketDto>> redisTemplate() {
         RedisTemplate<String, List<TicketDto>> template = new RedisTemplate<>();

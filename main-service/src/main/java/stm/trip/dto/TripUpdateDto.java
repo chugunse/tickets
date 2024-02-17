@@ -3,7 +3,6 @@ package stm.trip.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import stm.route.model.Route;
 
 @NoArgsConstructor
 @Setter

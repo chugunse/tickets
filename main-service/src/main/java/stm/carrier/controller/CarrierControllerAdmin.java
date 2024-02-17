@@ -25,26 +25,26 @@ public class CarrierControllerAdmin {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCarrier(@PathVariable int id){
+    public void deleteCarrier(@PathVariable int id) {
         carrierService.deleteCarrierById(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CarrierFullDto> getAllCarriers(){
+    public List<CarrierFullDto> getAllCarriers() {
         return carrierService.getAllFullCarriers();
     }
 
-    @PatchMapping ("/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CarrierFullDto patchCarrier(@PathVariable int id,
-                                   @RequestBody @Validated CarrierFullDto dto){
+                                       @RequestBody @Validated CarrierFullDto dto) {
         return carrierService.updateCarrier(id, dto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CarrierFullDto getCarrierById(@PathVariable int id){
+    public CarrierFullDto getCarrierById(@PathVariable int id) {
         return carrierService.getCarrierById(id);
     }
 }

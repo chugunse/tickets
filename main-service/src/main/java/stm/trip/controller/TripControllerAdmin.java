@@ -19,31 +19,31 @@ public class TripControllerAdmin {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TripFullDto addTrip(@RequestBody @Validated TripNewDto dto){
+    public TripFullDto addTrip(@RequestBody @Validated TripNewDto dto) {
         return tripService.addTrip(dto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTrip(@PathVariable int id){
+    public void deleteTrip(@PathVariable int id) {
         tripService.deleteTrip(id);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TripFullDto getTripById(@PathVariable int id){
+    public TripFullDto getTripById(@PathVariable int id) {
         return tripService.getTripById(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<TripFullDto> getAllTrips(){
+    public List<TripFullDto> getAllTrips() {
         return tripService.getAllTrips();
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TripFullDto patchTrip(@RequestBody @Validated TripUpdateDto dto, @PathVariable int id){
+    public TripFullDto patchTrip(@RequestBody @Validated TripUpdateDto dto, @PathVariable int id) {
         return tripService.updateTrip(dto, id);
     }
 }

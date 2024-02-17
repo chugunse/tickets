@@ -54,6 +54,7 @@ public class TripRepositoryImpl implements TripRepository {
                 ps.setInt(1, trip.getId());
                 ps.setInt(2, places.get(i));
             }
+
             @Override
             public int getBatchSize() {
                 return places.size();
@@ -69,7 +70,7 @@ public class TripRepositoryImpl implements TripRepository {
 
     @Override
     public Trip getById(int id) {
-        final String sqlQuery ="SELECT t.id as  tId, t.title, t.date_time, t.price,t. amount, " +
+        final String sqlQuery = "SELECT t.id as  tId, t.title, t.date_time, t.price,t. amount, " +
                 "t.route_id, r.route_number, fp.id fpi, fp.title fpt, sp.id spi, sp.title spt, r.duration, " +
                 "c.id as  cId, c.company, c.phone " +
                 "from trip as t " +
@@ -88,14 +89,14 @@ public class TripRepositoryImpl implements TripRepository {
     }
 
     @Override
-    public Map<Integer, Integer> getAllSoldCount(){
+    public Map<Integer, Integer> getAllSoldCount() {
         final String sqlQuery = "select trip_id, count(id) " +
                 "from ticket " +
                 "where user_id is not null " +
                 "group by trip_id";
         return jdbcTemplate.query(sqlQuery, rs -> {
-            HashMap<Integer,Integer>result = new HashMap<>();
-            while (rs.next()){
+            HashMap<Integer, Integer> result = new HashMap<>();
+            while (rs.next()) {
                 result.put(rs.getInt("trip_id"), rs.getInt("count"));
             }
             return result;
@@ -104,7 +105,7 @@ public class TripRepositoryImpl implements TripRepository {
 
     @Override
     public List<Trip> getAll() {
-        final String sqlQuery ="SELECT t.id as  tId, t.title, t.date_time, t.price,t. amount, " +
+        final String sqlQuery = "SELECT t.id as  tId, t.title, t.date_time, t.price,t. amount, " +
                 "t.route_id, r.route_number, fp.id fpi, fp.title fpt, sp.id spi, sp.title spt, r.duration, " +
                 "c.id as  cId, c.company, c.phone " +
                 "from trip as t " +

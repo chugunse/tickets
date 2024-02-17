@@ -9,6 +9,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface PointMapper {
     Point toModel(PointDto dto);
+
     PointDto toDto(Point model);
 
     List<PointDto> toDtoList(List<Point> list);

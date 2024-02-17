@@ -2,7 +2,6 @@ package stm.trip.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import stm.carrier.mapper.CarrierMapper;
 import stm.route.mapper.RouteMapper;
 import stm.trip.dto.TripFullDto;
 import stm.trip.dto.TripNewDto;
@@ -19,6 +18,8 @@ public interface TripMapper {
 
     @Mapping(target = "dateTime", dateFormat = "yyyy-MM-dd HH:mm")
     TripFullDto toFullDto(Trip model);
+
     List<TripFullDto> toFullDtoList(List<Trip> list);
+
     TripPublicDto toPublicDto(Trip trip);
 }

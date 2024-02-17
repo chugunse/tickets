@@ -25,9 +25,9 @@ public class TicketController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<TicketDto> getAllTickets(@RequestParam(required = false)
-                              @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeStart,
+                                         @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeStart,
                                          @RequestParam(required = false)
-                              @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
+                                         @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
                                          @RequestParam(required = false) Integer departurePointId,
                                          @RequestParam(required = false) String departurePoint,
                                          @RequestParam(required = false) Integer destinationPointId,
@@ -44,13 +44,13 @@ public class TicketController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TicketDto buyTicket(@RequestParam Integer userId, Integer ticketId){
+    public TicketDto buyTicket(@RequestParam Integer userId, Integer ticketId) {
         return ticketService.buyTicket(userId, ticketId);
     }
 
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    public List<TicketDto> getUserTickets(@RequestParam Integer id){
+    public List<TicketDto> getUserTickets(@RequestParam Integer id) {
         return ticketService.getUserTickets(id);
     }
 }

@@ -13,6 +13,6 @@ import javax.validation.constraints.Size;
 public class CarrierDto {
     @NotBlank
     String company;
-    @Size(min=5, max = 11, message = "некорректный номер телефона")
+    @Size(min = 5, max = 11, message = "некорректный номер телефона")
     String phone;
 }

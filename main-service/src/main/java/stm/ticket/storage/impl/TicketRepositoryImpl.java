@@ -45,37 +45,37 @@ public class TicketRepositoryImpl implements TicketRepository {
                 "join point fp on fp.id = route.departure_point_id " +
                 "join point sp on sp.id = route.destination_point_id " +
                 "where ticket.user_id is null ");
-        if (rangeStart != null){
+        if (rangeStart != null) {
             sqlQuery.append("and trip.date_time > to_timestamp('")
                     .append(rangeStart)
                     .append("', 'yyyy-mm-dd hh24:mi') ");
         }
-        if (rangeEnd != null){
+        if (rangeEnd != null) {
             sqlQuery.append("and trip.date_time < to_timestamp('")
                     .append(rangeEnd)
                     .append("', 'yyyy-mm-dd hh24:mi') ");
         }
-        if (departurePointId != null){
+        if (departurePointId != null) {
             sqlQuery.append("and route.departure_point_id = ")
                     .append(departurePointId)
                     .append(" ");
         }
-        if(departurePoint != null){
+        if (departurePoint != null) {
             sqlQuery.append("and  lower(fp.title) like lower('%")
                     .append(departurePoint)
                     .append("%') ");
         }
-        if (destinationPointId != null){
+        if (destinationPointId != null) {
             sqlQuery.append("and route.destination_point_id = ")
                     .append(destinationPointId)
                     .append(" ");
         }
-        if(destinationPoint != null){
+        if (destinationPoint != null) {
             sqlQuery.append("and  lower(sp.title) like lower('%")
                     .append(destinationPoint)
                     .append("%') ");
         }
-        if(carrier != null){
+        if (carrier != null) {
             sqlQuery.append("and  lower(carrier.company) like lower('%")
                     .append(carrier)
                     .append("%') ");
@@ -88,7 +88,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     private Ticket makeTicket(ResultSet resultSet, int rowNum) throws SQLException {
-       Carrier carrier = Carrier.builder()
+        Carrier carrier = Carrier.builder()
                 .id(resultSet.getInt("carrierId"))
                 .company(resultSet.getString("carrierCompany"))
                 .phone(resultSet.getString("carrierPhone"))
@@ -117,7 +117,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public Ticket getTicket(Integer id){
+    public Ticket getTicket(Integer id) {
         String sqlQuery = "select ticket.id as ticketId, ticket.place_number as tickePlaceN, " +
                 "trip.id as tripId, trip.title as tripTitle, trip.date_time as tripTime, trip.price as tripPrice, " +
                 "trip.amount as tripAmount," +
@@ -136,7 +136,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public void ticketSetUser(Integer ticketId, Integer userId){
+    public void ticketSetUser(Integer ticketId, Integer userId) {
         final String sqlQuery = "update ticket set user_id = ? where id = ?";
         jdbcTemplate.update(sqlQuery, userId, ticketId);
     }

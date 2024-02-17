@@ -75,9 +75,9 @@ public class TripServiceImpl implements TripService {
         List<TripPublicDto> list = new ArrayList<>();
         List<Trip> tripList = tripRepository.getAll();
         Map<Integer, Integer> mapSold = tripRepository.getAllSoldCount();
-        for (Trip trip : tripList){
+        for (Trip trip : tripList) {
             int available = trip.getAmount();
-            if (mapSold.containsKey(trip.getId())){
+            if (mapSold.containsKey(trip.getId())) {
                 available = available - mapSold.get(trip.getId());
             }
             TripPublicDto tripPublicDto = tripMapper.toPublicDto(trip);
