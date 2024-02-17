@@ -44,7 +44,7 @@ public class RouteServiceImpl implements RouteService {
             throw new ResourceNotFoundException(exception.getMessage());
         }
         List<PointDto> points = getAllPoints();
-        Map<Integer, PointDto> map = points.stream().collect(Collectors.toMap(PointDto::getId, pointDto -> pointDto));
+        Map<Long, PointDto> map = points.stream().collect(Collectors.toMap(PointDto::getId, pointDto -> pointDto));
         if (!map.containsKey(dto.getDeparturePoint()) || !map.containsKey(dto.getDestinationPoint())) {
             throw new ResourceNotFoundException("пункт отправления или назначения не найден");
         }
@@ -59,12 +59,12 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public void deleteRoute(int id) {
+    public void deleteRoute(Long id) {
         routeRepository.deleteById(id);
     }
 
     @Override
-    public RouteFullDto getRouteById(int id) {
+    public RouteFullDto getRouteById(Long id) {
         return routeMapper.toRouteFullDto(getById(id));
     }
 
@@ -74,10 +74,10 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public RouteFullDto patchRoute(int id, RoutePatchDto dto) {
+    public RouteFullDto patchRoute(Long id, RoutePatchDto dto) {
         RouteFullDto old = getRouteById(id);
         List<PointDto> points = getAllPoints();
-        Map<Integer, PointDto> map = points.stream().collect(Collectors.toMap(PointDto::getId, pointDto -> pointDto));
+        Map<Long, PointDto> map = points.stream().collect(Collectors.toMap(PointDto::getId, pointDto -> pointDto));
         if (dto.getDeparturePoint() != null) {
             if (map.containsKey(dto.getDeparturePoint())) {
                 old.setDeparturePoint(map.get(dto.getDeparturePoint()));
@@ -116,7 +116,7 @@ public class RouteServiceImpl implements RouteService {
         return pointMapper.toDtoList(list);
     }
 
-    public Route getById(int id) {
+    public Route getById(Long id) {
         try {
             return routeRepository.getById(id);
         } catch (EmptyResultDataAccessException exception) {

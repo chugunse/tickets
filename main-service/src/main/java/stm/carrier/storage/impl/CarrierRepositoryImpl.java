@@ -30,18 +30,18 @@ public class CarrierRepositoryImpl implements CarrierRepository {
             stmt.setString(2, carrier.getPhone());
             return stmt;
         }, generatedId);
-        carrier.setId(Objects.requireNonNull(generatedId.getKey()).intValue());
+        carrier.setId(Objects.requireNonNull(generatedId.getKey()).longValue());
         return carrier;
     }
 
     @Override
-    public Carrier getById(int id) {
+    public Carrier getById(Long id) {
         final String sqlQuery = "SELECT * FROM carrier WHERE id = ?";
         return jdbcTemplate.queryForObject(sqlQuery, this::makeCarrier, id);
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         jdbcTemplate.update("DELETE FROM carrier WHERE id = ?", id);
     }
 
@@ -60,7 +60,7 @@ public class CarrierRepositoryImpl implements CarrierRepository {
 
 
     private Carrier makeCarrier(ResultSet rs, int rowNum) throws SQLException {
-        int id = rs.getInt("id");
+        Long id = rs.getLong("id");
         String company = rs.getString("company");
         String phone = rs.getString("phone");
         return new Carrier(id, company, phone);

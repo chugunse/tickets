@@ -24,7 +24,7 @@ public class RouteRepositoryImpl implements RouteRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public int save(Route route) {
+    public Long save(Route route) {
         final String sqlQuery = "INSERT INTO route (route_number, departure_point_id, " +
                 "destination_point_id, carrier_id, duration) " +
                 "VALUES (?, ?, ?, ?, ?)";
@@ -32,22 +32,22 @@ public class RouteRepositoryImpl implements RouteRepository {
         jdbcTemplate.update(connection -> {
             final PreparedStatement stmt = connection.prepareStatement(sqlQuery, new String[]{"id"});
             stmt.setString(1, route.getRouteNumber());
-            stmt.setInt(2, route.getDeparturePoint().getId());
-            stmt.setInt(3, route.getDestinationPoint().getId());
-            stmt.setInt(4, route.getCarrier().getId());
+            stmt.setLong(2, route.getDeparturePoint().getId());
+            stmt.setLong(3, route.getDestinationPoint().getId());
+            stmt.setLong(4, route.getCarrier().getId());
             stmt.setObject(5, route.getDuration());
             return stmt;
         }, generatedId);
-        return Objects.requireNonNull(generatedId.getKey()).intValue();
+        return Objects.requireNonNull(generatedId.getKey()).longValue();
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         jdbcTemplate.update("DELETE FROM route WHERE id = ?", id);
     }
 
     @Override
-    public Route getById(int id) {
+    public Route getById(Long id) {
         final String sqlQuery = "SELECT route.id, route.route_number, " +
                 "fp.id fpi , fp.title fpt, " +
                 "sp.id spi , sp.title spt, " +
@@ -83,11 +83,11 @@ public class RouteRepositoryImpl implements RouteRepository {
         jdbcTemplate.update(connection -> {
             final PreparedStatement stmt = connection.prepareStatement(sqlQuery);
             stmt.setString(1, route.getRouteNumber());
-            stmt.setInt(2, route.getDeparturePoint().getId());
-            stmt.setInt(3, route.getDestinationPoint().getId());
-            stmt.setInt(4, route.getCarrier().getId());
+            stmt.setLong(2, route.getDeparturePoint().getId());
+            stmt.setLong(3, route.getDestinationPoint().getId());
+            stmt.setLong(4, route.getCarrier().getId());
             stmt.setObject(5, route.getDuration());
-            stmt.setInt(6, route.getId());
+            stmt.setLong(6, route.getId());
             return stmt;
         });
         return route;
@@ -102,7 +102,7 @@ public class RouteRepositoryImpl implements RouteRepository {
             stmt.setString(1, point.getTitle());
             return stmt;
         }, generatedId);
-        point.setId(Objects.requireNonNull(generatedId.getKey()).intValue());
+        point.setId(Objects.requireNonNull(generatedId.getKey()).longValue());
         return point;
     }
 
@@ -114,7 +114,7 @@ public class RouteRepositoryImpl implements RouteRepository {
         return jdbcTemplate.query(sqlQuery, rs -> {
             List<Point> list = new ArrayList<>();
             while (rs.next()) {
-                list.add(new Point(rs.getInt("id"), rs.getString("title")));
+                list.add(new Point(rs.getLong("id"), rs.getString("title")));
             }
             return list;
         });
@@ -122,12 +122,12 @@ public class RouteRepositoryImpl implements RouteRepository {
 
     private Route makeRoute(ResultSet resultSet, int rowNum) throws SQLException {
 
-        int id = resultSet.getInt("id");
+        Long id = resultSet.getLong("id");
         String routeNumber = resultSet.getString("route_number");
-        Point departurePoint = new Point(resultSet.getInt("fpi"), resultSet.getString("fpt"));
-        Point destinationPoint = new Point(resultSet.getInt("spi"), resultSet.getString("spt"));
+        Point departurePoint = new Point(resultSet.getLong("fpi"), resultSet.getString("fpt"));
+        Point destinationPoint = new Point(resultSet.getLong("spi"), resultSet.getString("spt"));
         LocalTime duration = resultSet.getTime("duration").toLocalTime();
-        Carrier carrier = new Carrier(resultSet.getInt("carId"),
+        Carrier carrier = new Carrier(resultSet.getLong("carId"),
                 resultSet.getString("company"),
                 resultSet.getString("phone"));
         return new Route(id, routeNumber, departurePoint, destinationPoint, carrier, duration);

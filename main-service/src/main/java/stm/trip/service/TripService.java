@@ -10,13 +10,13 @@ import java.util.List;
 public interface TripService {
     TripFullDto addTrip(TripNewDto dto);
 
-    void deleteTrip(int id);
+    void deleteTrip(Long id);
 
-    TripFullDto getTripById(int id);
+    TripFullDto getTripById(Long id);
 
     List<TripFullDto> getAllTrips();
 
     List<TripPublicDto> getAllTripsToPublic();
 
-    TripFullDto updateTrip(TripUpdateDto dto, int id);
+    TripFullDto updateTrip(TripUpdateDto dto, Long id);
 }

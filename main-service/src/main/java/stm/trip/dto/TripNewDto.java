@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class TripNewDto {
     private String title;
-    private int route;
+    private Long route;
     private String dateTime;
     private int price;
     private int amount;

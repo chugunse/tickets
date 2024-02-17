@@ -30,18 +30,18 @@ public class UserJdbcRepository implements UserRepository {
             stmt.setString(3, user.getFullName());
             return stmt;
         }, generatedId);
-        user.setId(Objects.requireNonNull(generatedId.getKey()).intValue());
+        user.setId(Objects.requireNonNull(generatedId.getKey()).longValue());
         return user;
     }
 
     @Override
-    public User getById(Integer userId) {
+    public User getById(Long userId) {
         final String sqlQuery = "SELECT * FROM users WHERE id = ?";
         return jdbcTemplate.queryForObject(sqlQuery, this::makeUser, userId);
     }
 
     private User makeUser(ResultSet rs, int rowNum) throws SQLException {
-        int id = rs.getInt("id");
+        Long id = rs.getLong("id");
         String login = rs.getString("login");
         String password = rs.getString("password");
         String fullName = rs.getString("full_name");

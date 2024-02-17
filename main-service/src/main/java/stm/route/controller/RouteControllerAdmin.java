@@ -27,13 +27,13 @@ public class RouteControllerAdmin {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteRoute(@PathVariable int id) {
+    public void deleteRoute(@PathVariable Long id) {
         routeService.deleteRoute(id);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RouteFullDto getRouteById(@PathVariable int id) {
+    public RouteFullDto getRouteById(@PathVariable Long id) {
         return routeService.getRouteById(id);
     }
 
@@ -45,7 +45,7 @@ public class RouteControllerAdmin {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RouteFullDto patchRoute(@PathVariable int id, @RequestBody @Validated RoutePatchDto dto) {
+    public RouteFullDto patchRoute(@PathVariable Long id, @RequestBody @Validated RoutePatchDto dto) {
         return routeService.patchRoute(id, dto);
     }
 

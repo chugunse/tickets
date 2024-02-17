@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class Trip {
-    private int id;
+    private Long id;
     private String title;
     private Route route;
     private LocalDateTime dateTime;

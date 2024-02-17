@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class CarrierFullDto {
-    int id;
+    Long id;
     @Size(min = 3, max = 50, message = "название компаниие слишком длинное или короткое")
     String company;
     @Size(min = 5, max = 11, message = "некорректный номер телефона")

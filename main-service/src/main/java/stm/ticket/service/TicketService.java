@@ -9,13 +9,13 @@ public interface TicketService {
 
     List<TicketDto> getAllTickets(LocalDateTime rangeStart,
                                   LocalDateTime rangeEnd,
-                                  Integer departurePointId, String departurePoint,
-                                  Integer destinationPointId, String destinationPoint,
+                                  Long departurePointId, String departurePoint,
+                                  Long destinationPointId, String destinationPoint,
                                   String carrier,
                                   Integer from,
                                   Integer size);
 
-    TicketDto buyTicket(Integer userId, Integer ticketId);
+    TicketDto buyTicket(Long userId, Long ticketId);
 
-    List<TicketDto> getUserTickets(Integer id);
+    List<TicketDto> getUserTickets(Long id);
 }

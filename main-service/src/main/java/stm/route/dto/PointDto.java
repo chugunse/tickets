@@ -10,6 +10,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class PointDto implements Serializable {
-    private int id;
+    private Long id;
     private String title;
 }

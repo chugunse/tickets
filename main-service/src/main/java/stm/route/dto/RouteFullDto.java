@@ -9,7 +9,7 @@ import stm.carrier.dto.CarrierFullDto;
 @Getter
 @Setter
 public class RouteFullDto {
-    private int id;
+    private Long id;
     private String routeNumber;
     private PointDto departurePoint;
     private PointDto destinationPoint;

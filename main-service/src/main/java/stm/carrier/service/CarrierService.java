@@ -8,13 +8,13 @@ import java.util.List;
 public interface CarrierService {
     CarrierFullDto addCarrier(CarrierDto dto);
 
-    void deleteCarrierById(int id);
+    void deleteCarrierById(Long id);
 
     List<CarrierFullDto> getAllFullCarriers();
 
-    CarrierFullDto updateCarrier(int id, CarrierFullDto dto);
+    CarrierFullDto updateCarrier(Long id, CarrierFullDto dto);
 
-    CarrierFullDto getCarrierById(int id);
+    CarrierFullDto getCarrierById(Long id);
 
     List<CarrierDto> getAllCarriers();
 }

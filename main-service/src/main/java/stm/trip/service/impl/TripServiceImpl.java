@@ -41,12 +41,12 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public void deleteTrip(int id) {
+    public void deleteTrip(Long id) {
         tripRepository.deleteById(id);
     }
 
     @Override
-    public TripFullDto getTripById(int id) {
+    public TripFullDto getTripById(Long id) {
         Trip trip;
         try {
             trip = tripRepository.getById(id);
@@ -61,7 +61,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<TripFullDto> getAllTrips() {
         List<TripFullDto> listDto = tripMapper.toFullDtoList(tripRepository.getAll());
-        Map<Integer, Integer> mapSold = tripRepository.getAllSoldCount();
+        Map<Long, Integer> mapSold = tripRepository.getAllSoldCount();
         for (TripFullDto trip : listDto) {
             if (mapSold.containsKey(trip.getId())) {
                 trip.setSold(mapSold.get(trip.getId()));
@@ -74,7 +74,7 @@ public class TripServiceImpl implements TripService {
     public List<TripPublicDto> getAllTripsToPublic() {
         List<TripPublicDto> list = new ArrayList<>();
         List<Trip> tripList = tripRepository.getAll();
-        Map<Integer, Integer> mapSold = tripRepository.getAllSoldCount();
+        Map<Long, Integer> mapSold = tripRepository.getAllSoldCount();
         for (Trip trip : tripList) {
             int available = trip.getAmount();
             if (mapSold.containsKey(trip.getId())) {
@@ -88,7 +88,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public TripFullDto updateTrip(TripUpdateDto dto, int id) {
+    public TripFullDto updateTrip(TripUpdateDto dto, Long id) {
         Trip trip = tripRepository.getById(id);
         ofNullable(dto.getTitle()).ifPresent(trip::setTitle);
         Optional.of(dto.getPrice()).ifPresent(trip::setPrice);

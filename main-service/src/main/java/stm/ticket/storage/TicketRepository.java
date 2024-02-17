@@ -1,21 +1,18 @@
 package stm.ticket.storage;
 
-import stm.ticket.dto.TicketDto;
 import stm.ticket.model.Ticket;
 
 import java.util.List;
 
 public interface TicketRepository {
-    TicketDto saveTickets(Ticket ticket, int amount);
-
     List<Ticket> getTickets(String rangeStart, String rangeEnd,
-                            Integer departurePointId, Integer destinationPointId,
+                            Long departurePointId, Long destinationPointId,
                             String departurePoint, String destinationPoint,
                             String carrier, Integer from, Integer size);
 
-    Ticket getTicket(Integer id);
+    Ticket getTicket(Long id);
 
-    void ticketSetUser(Integer ticketId, Integer userId);
+    void ticketSetUser(Long ticketId, Long userId);
 
-    List<Ticket> getUserTickets(Integer id);
+    List<Ticket> getUserTickets(Long id);
 }

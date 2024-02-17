@@ -10,7 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 public class Carrier implements Serializable {
-    private int id;
+    private Long id;
     private final String company;
     private final String phone;
 }

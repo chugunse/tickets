@@ -25,7 +25,7 @@ public class CarrierControllerAdmin {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCarrier(@PathVariable int id) {
+    public void deleteCarrier(@PathVariable Long id) {
         carrierService.deleteCarrierById(id);
     }
 
@@ -37,14 +37,14 @@ public class CarrierControllerAdmin {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CarrierFullDto patchCarrier(@PathVariable int id,
+    public CarrierFullDto patchCarrier(@PathVariable Long id,
                                        @RequestBody @Validated CarrierFullDto dto) {
         return carrierService.updateCarrier(id, dto);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CarrierFullDto getCarrierById(@PathVariable int id) {
+    public CarrierFullDto getCarrierById(@PathVariable Long id) {
         return carrierService.getCarrierById(id);
     }
 }

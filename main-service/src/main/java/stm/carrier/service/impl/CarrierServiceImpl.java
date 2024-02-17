@@ -35,7 +35,7 @@ public class CarrierServiceImpl implements CarrierService {
     }
 
     @Override
-    public void deleteCarrierById(int id) {
+    public void deleteCarrierById(Long id) {
         try {
             carrierRepository.deleteById(id);
         } catch (EmptyResultDataAccessException exception) {
@@ -49,7 +49,7 @@ public class CarrierServiceImpl implements CarrierService {
     }
 
     @Override
-    public CarrierFullDto updateCarrier(int id, CarrierFullDto dto) {
+    public CarrierFullDto updateCarrier(Long id, CarrierFullDto dto) {
         CarrierFullDto carrierFullDtoFromDB = getCarrierById(id);
         ofNullable(dto.getCompany()).ifPresent(carrierFullDtoFromDB::setCompany);
         ofNullable(dto.getPhone()).ifPresent(carrierFullDtoFromDB::setPhone);
@@ -58,7 +58,7 @@ public class CarrierServiceImpl implements CarrierService {
     }
 
     @Override
-    public CarrierFullDto getCarrierById(int id) {
+    public CarrierFullDto getCarrierById(Long id) {
         try {
             return carrierMapper.toCarrierFullDto(carrierRepository.getById(id));
         } catch (EmptyResultDataAccessException exception) {

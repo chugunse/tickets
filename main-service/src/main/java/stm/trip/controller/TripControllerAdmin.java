@@ -25,13 +25,13 @@ public class TripControllerAdmin {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTrip(@PathVariable int id) {
+    public void deleteTrip(@PathVariable Long id) {
         tripService.deleteTrip(id);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TripFullDto getTripById(@PathVariable int id) {
+    public TripFullDto getTripById(@PathVariable Long id) {
         return tripService.getTripById(id);
     }
 
@@ -43,7 +43,7 @@ public class TripControllerAdmin {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TripFullDto patchTrip(@RequestBody @Validated TripUpdateDto dto, @PathVariable int id) {
+    public TripFullDto patchTrip(@RequestBody @Validated TripUpdateDto dto, @PathVariable Long id) {
         return tripService.updateTrip(dto, id);
     }
 }

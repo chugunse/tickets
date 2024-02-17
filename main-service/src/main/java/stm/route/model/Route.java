@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Builder
 public class Route implements Serializable {
-    private int id;
+    private Long id;
     private String routeNumber;
     private Point departurePoint;
     private Point destinationPoint;

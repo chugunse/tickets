@@ -6,11 +6,11 @@ import stm.route.model.Route;
 import java.util.List;
 
 public interface RouteRepository {
-    int save(Route route);
+    Long save(Route route);
 
-    void deleteById(int id);
+    void deleteById(Long id);
 
-    Route getById(int id);
+    Route getById(Long id);
 
     List<Route> getAll();
 

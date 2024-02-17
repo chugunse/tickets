@@ -39,8 +39,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketDto> getAllTickets(LocalDateTime rangeStart, LocalDateTime rangeEnd,
-                                         Integer departurePointId, String departurePoint,
-                                         Integer destinationPointId, String destinationPoint,
+                                         Long departurePointId, String departurePoint,
+                                         Long destinationPointId, String destinationPoint,
                                          String carrier, Integer from, Integer size) {
         if (rangeStart != null && rangeEnd != null) {
             if (rangeEnd.isBefore(rangeStart)) {
@@ -59,7 +59,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketDto buyTicket(Integer userId, Integer ticketId) {
+    public TicketDto buyTicket(Long userId, Long ticketId) {
         Ticket ticket;
         User user;
         try {
@@ -82,7 +82,7 @@ public class TicketServiceImpl implements TicketService {
         list.add(ticketDto);
         redisTemplate.opsForValue().set(CASH_USER_TICKETS + userId, list, cashDuretion);
         kafkaProducer.send(TicketSaveDto.builder()
-                .id((long) ticket.getId())
+                .id(ticket.getId())
                 .buyersFullName(user.getFullName())
                 .placeNumber(ticket.getPlaceNumber())
                 .tripTitle(ticket.getTrip().getTitle())
@@ -98,7 +98,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<TicketDto> getUserTickets(Integer id) {
+    public List<TicketDto> getUserTickets(Long id) {
         List<TicketDto> list;
         try {
             list = new ArrayList<>(Objects.requireNonNull(redisTemplate.opsForValue().get(CASH_USER_TICKETS + id)));

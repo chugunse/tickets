@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 public class RoutePatchDto {
     private String routeNumber;
-    private Integer departurePoint;
-    private Integer destinationPoint;
-    private Integer carrierId;
+    private Long departurePoint;
+    private Long destinationPoint;
+    private Long carrierId;
     private String duration;
 }

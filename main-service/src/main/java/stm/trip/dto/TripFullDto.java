@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class TripFullDto implements Serializable {
-    private int id;
+    private Long id;
     private String title;
     private Route route;
     private String dateTime;

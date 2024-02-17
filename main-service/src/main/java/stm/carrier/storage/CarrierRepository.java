@@ -7,9 +7,9 @@ import java.util.List;
 public interface CarrierRepository {
     Carrier save(Carrier model);
 
-    Carrier getById(int Id);
+    Carrier getById(Long Id);
 
-    void deleteById(int id);
+    void deleteById(Long id);
 
     List<Carrier> getAll();
 

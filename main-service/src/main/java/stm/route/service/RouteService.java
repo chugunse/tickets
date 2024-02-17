@@ -11,13 +11,13 @@ public interface RouteService {
 
     RouteFullDto addRoute(RouteNewDto dto);
 
-    void deleteRoute(int id);
+    void deleteRoute(Long id);
 
-    RouteFullDto getRouteById(int id);
+    RouteFullDto getRouteById(Long id);
 
     List<RouteFullDto> getAllRoutes();
 
-    RouteFullDto patchRoute(int id, RoutePatchDto dto);
+    RouteFullDto patchRoute(Long id, RoutePatchDto dto);
 
     PointDto addPoint(PointDto dto);
 

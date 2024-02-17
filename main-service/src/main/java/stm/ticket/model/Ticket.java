@@ -9,7 +9,7 @@ import stm.trip.model.Trip;
 @AllArgsConstructor
 @Builder
 public class Ticket {
-    private int id;
+    private Long id;
     private Trip trip;
     private int placeNumber;
 }

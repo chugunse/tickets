@@ -8,6 +8,6 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 public class Point implements Serializable {
-    private int id;
+    private Long id;
     private String title;
 }

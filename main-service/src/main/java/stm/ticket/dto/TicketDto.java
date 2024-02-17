@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class TicketDto implements Serializable {
-    private int id;
+    private Long id;
     private TripFullDto trip;
     private int placeNumber;
     private int price;

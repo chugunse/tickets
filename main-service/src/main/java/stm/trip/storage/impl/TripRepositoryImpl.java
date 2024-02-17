@@ -41,17 +41,17 @@ public class TripRepositoryImpl implements TripRepository {
         jdbcTemplate.update(connection -> {
             final PreparedStatement stmt = connection.prepareStatement(sqlQueryForTrip, new String[]{"id"});
             stmt.setString(1, trip.getTitle());
-            stmt.setInt(2, trip.getRoute().getId());
+            stmt.setLong(2, trip.getRoute().getId());
             stmt.setObject(3, trip.getDateTime());
             stmt.setInt(4, trip.getPrice());
             stmt.setInt(5, trip.getAmount());
             return stmt;
         }, generatedId);
-        trip.setId(Objects.requireNonNull(generatedId.getKey()).intValue());
+        trip.setId(Objects.requireNonNull(generatedId.getKey()).longValue());
         jdbcTemplate.batchUpdate(sqlQueryForTicket, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setInt(1, trip.getId());
+                ps.setLong(1, trip.getId());
                 ps.setInt(2, places.get(i));
             }
 
@@ -64,12 +64,12 @@ public class TripRepositoryImpl implements TripRepository {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         jdbcTemplate.update("DELETE FROM trip WHERE id = ?", id);
     }
 
     @Override
-    public Trip getById(int id) {
+    public Trip getById(Long id) {
         final String sqlQuery = "SELECT t.id as  tId, t.title, t.date_time, t.price,t. amount, " +
                 "t.route_id, r.route_number, fp.id fpi, fp.title fpt, sp.id spi, sp.title spt, r.duration, " +
                 "c.id as  cId, c.company, c.phone " +
@@ -83,21 +83,21 @@ public class TripRepositoryImpl implements TripRepository {
     }
 
     @Override
-    public Integer getSoldCount(int id) {
+    public Integer getSoldCount(Long id) {
         final String sqlQuery = "select count(id) from ticket where trip_id = ? and user_id is not null";
         return jdbcTemplate.queryForObject(sqlQuery, (rs, rowNum) -> rs.getInt("count"), id);
     }
 
     @Override
-    public Map<Integer, Integer> getAllSoldCount() {
+    public Map<Long, Integer> getAllSoldCount() {
         final String sqlQuery = "select trip_id, count(id) " +
                 "from ticket " +
                 "where user_id is not null " +
                 "group by trip_id";
         return jdbcTemplate.query(sqlQuery, rs -> {
-            HashMap<Integer, Integer> result = new HashMap<>();
+            HashMap<Long, Integer> result = new HashMap<>();
             while (rs.next()) {
-                result.put(rs.getInt("trip_id"), rs.getInt("count"));
+                result.put(rs.getLong("trip_id"), rs.getInt("count"));
             }
             return result;
         });
@@ -118,20 +118,20 @@ public class TripRepositoryImpl implements TripRepository {
 
     private Trip makeTrip(ResultSet resultSet, int rowNum) throws SQLException {
         Carrier carrier = Carrier.builder()
-                .id(resultSet.getInt("cId"))
+                .id(resultSet.getLong("cId"))
                 .company(resultSet.getString("company"))
                 .phone(resultSet.getString("phone"))
                 .build();
         Route route = Route.builder()
-                .id(resultSet.getInt("route_id"))
+                .id(resultSet.getLong("route_id"))
                 .routeNumber(resultSet.getString("route_number"))
-                .departurePoint(new Point(resultSet.getInt("fpi"), resultSet.getString("fpt")))
-                .destinationPoint(new Point(resultSet.getInt("spi"), resultSet.getString("spt")))
+                .departurePoint(new Point(resultSet.getLong("fpi"), resultSet.getString("fpt")))
+                .destinationPoint(new Point(resultSet.getLong("spi"), resultSet.getString("spt")))
                 .duration(resultSet.getTime("duration").toLocalTime())
                 .carrier(carrier)
                 .build();
         return Trip.builder()
-                .id(resultSet.getInt("tId"))
+                .id(resultSet.getLong("tId"))
                 .title(resultSet.getString("title"))
                 .dateTime(resultSet.getObject("date_time", LocalDateTime.class))
                 .price(resultSet.getInt("price"))

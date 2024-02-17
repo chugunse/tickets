@@ -8,13 +8,13 @@ import java.util.Map;
 public interface TripRepository {
     Trip save(Trip trip);
 
-    void deleteById(int id);
+    void deleteById(Long id);
 
-    Trip getById(int id);
+    Trip getById(Long id);
 
-    Integer getSoldCount(int id);
+    Integer getSoldCount(Long id);
 
-    Map<Integer, Integer> getAllSoldCount();
+    Map<Long, Integer> getAllSoldCount();
 
     List<Trip> getAll();
 }
