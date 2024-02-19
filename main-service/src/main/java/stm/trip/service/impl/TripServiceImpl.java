@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import stm.exception.model.ResourceNotFoundException;
 import stm.route.model.Route;
 import stm.route.storage.RouteRepository;
@@ -33,6 +34,7 @@ public class TripServiceImpl implements TripService {
     private final TripRepository tripRepository;
     private final TripMapper tripMapper;
 
+    @Transactional
     @Override
     public TripFullDto addTrip(TripNewDto dto) {
         Route route = routeRepository.getById(dto.getRoute());
@@ -42,11 +44,13 @@ public class TripServiceImpl implements TripService {
         return tripMapper.toFullDto(trip);
     }
 
+    @Transactional
     @Override
     public void deleteTrip(Long id) {
         tripRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public TripFullDto getTripById(Long id) {
         Trip trip;
@@ -61,6 +65,7 @@ public class TripServiceImpl implements TripService {
         return dto;
     }
 
+    @Transactional
     @Override
     public List<TripFullDto> getAllTrips() {
         List<TripFullDto> listDto = tripMapper.toFullDtoList(tripRepository.getAll());
@@ -73,6 +78,7 @@ public class TripServiceImpl implements TripService {
         return listDto;
     }
 
+    @Transactional
     @Override
     public List<TripPublicDto> getAllTripsToPublic() {
         List<TripPublicDto> list = new ArrayList<>();
@@ -90,6 +96,7 @@ public class TripServiceImpl implements TripService {
         return list;
     }
 
+    @Transactional
     @Override
     public TripFullDto updateTrip(TripUpdateDto dto, Long id) {
         Trip trip = tripRepository.getById(id);

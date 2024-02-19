@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import stm.carrier.dto.CarrierDto;
 import stm.carrier.dto.CarrierFullDto;
 import stm.carrier.mapper.CarrierMapper;
@@ -25,6 +26,7 @@ public class CarrierServiceImpl implements CarrierService {
     private final CarrierRepository carrierRepository;
     private final CarrierMapper carrierMapper;
 
+    @Transactional
     @Override
     public CarrierFullDto addCarrier(CarrierDto dto) {
         try {
@@ -37,6 +39,7 @@ public class CarrierServiceImpl implements CarrierService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteCarrierById(Long id) {
         try {
@@ -47,11 +50,13 @@ public class CarrierServiceImpl implements CarrierService {
         }
     }
 
+    @Transactional
     @Override
     public List<CarrierFullDto> getAllFullCarriers() {
         return carrierMapper.toCarrierFullDtoList(carrierRepository.getAll());
     }
 
+    @Transactional
     @Override
     public CarrierFullDto updateCarrier(Long id, CarrierFullDto dto) {
         CarrierFullDto carrierFullDtoFromDB = getCarrierById(id);
@@ -61,6 +66,7 @@ public class CarrierServiceImpl implements CarrierService {
         return carrierFullDtoFromDB;
     }
 
+    @Transactional
     @Override
     public CarrierFullDto getCarrierById(Long id) {
         try {
@@ -71,6 +77,7 @@ public class CarrierServiceImpl implements CarrierService {
         }
     }
 
+    @Transactional
     @Override
     public List<CarrierDto> getAllCarriers() {
         return carrierMapper.toCarrierDtoList(carrierRepository.getAll());

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import stm.carrier.dto.CarrierFullDto;
 import stm.carrier.mapper.CarrierMapper;
 import stm.carrier.model.Carrier;
@@ -38,6 +39,7 @@ public class RouteServiceImpl implements RouteService {
     private final PointMapper pointMapper;
 
     @Override
+    @Transactional
     public RouteFullDto addRoute(RouteNewDto dto) {
         Carrier carrier;
         try {
@@ -62,21 +64,25 @@ public class RouteServiceImpl implements RouteService {
         return routeMapper.toRouteFullDto(route);
     }
 
+    @Transactional
     @Override
     public void deleteRoute(Long id) {
         routeRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public RouteFullDto getRouteById(Long id) {
         return routeMapper.toRouteFullDto(getById(id));
     }
 
+    @Transactional
     @Override
     public List<RouteFullDto> getAllRoutes() {
         return routeMapper.toRouteFullDtoList(routeRepository.getAll());
     }
 
+    @Transactional
     @Override
     public RouteFullDto patchRoute(Long id, RoutePatchDto dto) {
         RouteFullDto old = getRouteById(id);
@@ -109,12 +115,14 @@ public class RouteServiceImpl implements RouteService {
         return old;
     }
 
+    @Transactional
     @Override
     public PointDto addPoint(PointDto dto) {
         Point point = routeRepository.addPoint(pointMapper.toModel(dto));
         return pointMapper.toDto(point);
     }
 
+    @Transactional
     @Override
     @Cacheable(value = "RouteService::getAllPoints")
     public List<PointDto> getAllPoints() {
@@ -122,6 +130,7 @@ public class RouteServiceImpl implements RouteService {
         return pointMapper.toDtoList(list);
     }
 
+    @Transactional
     public Route getById(Long id) {
         try {
             return routeRepository.getById(id);

@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import stm.exception.model.BadRequestException;
 import stm.exception.model.ResourceNotFoundException;
 import stm.kafka.KafkaProducer;
@@ -39,6 +41,7 @@ public class TicketServiceImpl implements TicketService {
 
     private final UserRepository userRepository;
 
+    @Transactional
     @Override
     public List<TicketDto> getAllTickets(LocalDateTime rangeStart, LocalDateTime rangeEnd,
                                          Long departurePointId, String departurePoint,
@@ -61,6 +64,7 @@ public class TicketServiceImpl implements TicketService {
         return ticketMapper.toTicketDtoList(tickets);
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
     public TicketDto buyTicket(Long userId, Long ticketId) {
         Ticket ticket;
@@ -102,6 +106,7 @@ public class TicketServiceImpl implements TicketService {
         return ticketDto;
     }
 
+    @Transactional
     @Override
     public List<TicketDto> getUserTickets(Long id) {
         List<TicketDto> list;
