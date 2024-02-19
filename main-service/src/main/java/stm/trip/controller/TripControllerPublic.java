@@ -1,5 +1,7 @@
 package stm.trip.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +16,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/trips")
 @RequiredArgsConstructor
+@Tag(name = "контроллер рейсов")
 public class TripControllerPublic {
     private final TripServiceImpl tripService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "просмотр рейсов")
     public List<TripPublicDto> getAllTrips() {
         return tripService.getAllTripsToPublic();
     }

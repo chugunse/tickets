@@ -1,6 +1,7 @@
 package stm.route.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import static java.util.Optional.ofNullable;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RouteServiceImpl implements RouteService {
     private final RouteRepository routeRepository;
     private final CarrierRepository carrierRepository;
@@ -41,11 +43,13 @@ public class RouteServiceImpl implements RouteService {
         try {
             carrier = carrierRepository.getById(dto.getCarrierId());
         } catch (EmptyResultDataAccessException exception) {
-            throw new ResourceNotFoundException(exception.getMessage());
+            log.warn("для маршрута превозчик с id = {} не найден", dto.getCarrierId());
+            throw new ResourceNotFoundException("для маршрута превозчик с id = " + dto.getCarrierId() + " не найден");
         }
         List<PointDto> points = getAllPoints();
         Map<Long, PointDto> map = points.stream().collect(Collectors.toMap(PointDto::getId, pointDto -> pointDto));
         if (!map.containsKey(dto.getDeparturePoint()) || !map.containsKey(dto.getDestinationPoint())) {
+            log.warn("пункт отправления или назначения не найден");
             throw new ResourceNotFoundException("пункт отправления или назначения не найден");
         }
         Route route = routeMapper.toRouteModel(dto);
@@ -82,6 +86,7 @@ public class RouteServiceImpl implements RouteService {
             if (map.containsKey(dto.getDeparturePoint())) {
                 old.setDeparturePoint(map.get(dto.getDeparturePoint()));
             } else {
+                log.warn("пункт отправления с id= {} не найден", dto.getDeparturePoint());
                 throw new ResourceNotFoundException("пункт отправления с id= " + dto.getDeparturePoint() + "не найден");
             }
         }
@@ -89,7 +94,8 @@ public class RouteServiceImpl implements RouteService {
             if (map.containsKey(dto.getDestinationPoint())) {
                 old.setDestinationPoint(map.get(dto.getDestinationPoint()));
             } else {
-                throw new ResourceNotFoundException("пункт назначения с id= " + dto.getDeparturePoint() + "не найден");
+                log.warn("пункт назначения с id= {} не найден", dto.getDestinationPoint());
+                throw new ResourceNotFoundException("пункт назначения с id= " + dto.getDestinationPoint()+ "не найден");
             }
         }
         ofNullable(dto.getDuration()).ifPresent(old::setDuration);
@@ -120,7 +126,8 @@ public class RouteServiceImpl implements RouteService {
         try {
             return routeRepository.getById(id);
         } catch (EmptyResultDataAccessException exception) {
-            throw new ResourceNotFoundException(exception.getMessage());
+            log.warn("маршрут с id = {} не найдена", id);
+            throw new ResourceNotFoundException("маршрут с id = " + id + " не найдена");
         }
     }
 }

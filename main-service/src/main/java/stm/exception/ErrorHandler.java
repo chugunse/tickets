@@ -1,5 +1,6 @@
 package stm.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import stm.exception.model.ApiError;
+import stm.exception.model.BadRequestException;
 import stm.exception.model.ConflictException;
 import stm.exception.model.ResourceNotFoundException;
 import stm.util.Constants;
@@ -15,6 +17,7 @@ import stm.util.Constants;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
+@Slf4j
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
@@ -82,14 +85,14 @@ public class ErrorHandler {
                 .build();
     }
 
-//    @ExceptionHandler
-//    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-//    public ApiError handleBadRequestException(final BadRequestException e) {
-//        return ApiError.builder()
-//                .message(e.getMessage())
-//                .reason("BadRequestException")
-//                .status("BadRequestException")
-//                .timestamp((LocalDateTime.now().format(Constants.formatter)))
-//                .build();
-//    }
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiError handleBadRequestException(final BadRequestException e) {
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason("BadRequestException")
+                .status("BadRequestException")
+                .timestamp((LocalDateTime.now().format(Constants.formatterDateTime)))
+                .build();
+    }
 }

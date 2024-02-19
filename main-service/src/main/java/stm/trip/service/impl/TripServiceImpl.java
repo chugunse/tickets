@@ -1,6 +1,7 @@
 package stm.trip.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import stm.exception.model.ResourceNotFoundException;
@@ -26,6 +27,7 @@ import static java.util.Optional.ofNullable;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TripServiceImpl implements TripService {
     private final RouteRepository routeRepository;
     private final TripRepository tripRepository;
@@ -51,7 +53,8 @@ public class TripServiceImpl implements TripService {
         try {
             trip = tripRepository.getById(id);
         } catch (EmptyResultDataAccessException exception) {
-            throw new ResourceNotFoundException(exception.getMessage());
+            log.warn("рейс с id = {} не найден", id);
+            throw new ResourceNotFoundException("рейс с id = " + id + " не найден");
         }
         TripFullDto dto = tripMapper.toFullDto(trip);
         dto.setSold(tripRepository.getSoldCount(id));

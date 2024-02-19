@@ -2,6 +2,7 @@ package stm.ticket.service.impl;
 
 import dto.TicketSaveDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TicketServiceImpl implements TicketService {
     String CASH_USER_TICKETS = "cashUserTickets::";
     Duration cashDuretion = Duration.ofMinutes(10);
@@ -44,6 +46,7 @@ public class TicketServiceImpl implements TicketService {
                                          String carrier, Integer from, Integer size) {
         if (rangeStart != null && rangeEnd != null) {
             if (rangeEnd.isBefore(rangeStart)) {
+                log.warn("ошибка в веденных параметрах запроса времени");
                 throw new BadRequestException("ошибка в веденных параметрах запроса времени");
             }
         }
@@ -65,11 +68,13 @@ public class TicketServiceImpl implements TicketService {
         try {
             ticket = ticketRepository.getTicket(ticketId);
         } catch (EmptyResultDataAccessException exception) {
+            log.warn("билет не найден либо продан");
             throw new ResourceNotFoundException("билет не найден либо продан");
         }
         try {
             user = userRepository.getById(userId);
         } catch (EmptyResultDataAccessException exception) {
+            log.warn("покупатель с id = {} не найден", userId);
             throw new ResourceNotFoundException("покупатель с id = " + userId + " не найден");
         }
         ticketRepository.ticketSetUser(ticketId, userId);
@@ -110,6 +115,7 @@ public class TicketServiceImpl implements TicketService {
             redisTemplate.opsForValue().set(CASH_USER_TICKETS + id, list, cashDuretion);
             return list;
         } catch (EmptyResultDataAccessException exception) {
+            log.warn("у пользователя нет купленных билетов");
             throw new ResourceNotFoundException("у пользователя нет купленных билетов");
         }
     }

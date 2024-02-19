@@ -1,6 +1,7 @@
 package stm.carrier.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import static java.util.Optional.ofNullable;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CarrierServiceImpl implements CarrierService {
     private final CarrierRepository carrierRepository;
     private final CarrierMapper carrierMapper;
@@ -29,6 +31,7 @@ public class CarrierServiceImpl implements CarrierService {
             Carrier carrier = carrierRepository.save(carrierMapper.toCarrierModel(dto));
             return carrierMapper.toCarrierFullDto(carrier);
         } catch (DuplicateKeyException e) {
+            log.warn("компания {} или ее номер телефона {} уже используются в базе" ,dto.getCompany(), dto.getPhone());
             throw new ConflictException("компания '" + dto.getCompany() + "' или ее номер телефона '" +
                     dto.getPhone() + " уже используются в базе");
         }
@@ -39,6 +42,7 @@ public class CarrierServiceImpl implements CarrierService {
         try {
             carrierRepository.deleteById(id);
         } catch (EmptyResultDataAccessException exception) {
+            log.warn("компания с id = {} не найдена", id);
             throw new ResourceNotFoundException("компания с id = " + id + " не найдена");
         }
     }
@@ -62,7 +66,8 @@ public class CarrierServiceImpl implements CarrierService {
         try {
             return carrierMapper.toCarrierFullDto(carrierRepository.getById(id));
         } catch (EmptyResultDataAccessException exception) {
-            throw new ResourceNotFoundException(exception.getMessage());
+            log.warn("компания с id = {} не найдена", id);
+            throw new ResourceNotFoundException("компания с id = " + id + " не найдена");
         }
     }
 

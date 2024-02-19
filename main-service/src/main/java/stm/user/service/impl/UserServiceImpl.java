@@ -1,6 +1,7 @@
 package stm.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import stm.exception.model.ConflictException;
@@ -13,6 +14,7 @@ import stm.user.storage.UserRepository;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -23,6 +25,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.save(userMapper.toUser(dto));
             return userMapper.toUserDto(user);
         } catch (DuplicateKeyException e) {
+            log.info("логин {} занят", dto.getLogin());
             throw new ConflictException("логин '" + dto.getLogin() + "' занят");
         }
     }

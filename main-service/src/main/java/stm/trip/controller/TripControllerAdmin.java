@@ -1,6 +1,10 @@
 package stm.trip.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,36 +18,52 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/trips")
 @RequiredArgsConstructor
+@Validated
+@Slf4j
+@Tag(name = "контроллер рейсов",
+        description = "управление рейсами")
 public class TripControllerAdmin {
     private final TripServiceImpl tripService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TripFullDto addTrip(@RequestBody @Validated TripNewDto dto) {
+    @Operation(summary = "добавление нового рейса")
+    public TripFullDto addTrip(@RequestBody @Validated @Parameter(description = "dto нового рейса") TripNewDto dto) {
+        log.info("post: добавить рейс {}", dto);
         return tripService.addTrip(dto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTrip(@PathVariable Long id) {
+    @Operation(summary = "удаление рейса")
+    public void deleteTrip(@PathVariable @Parameter(description = "id рейса") Long id) {
+        log.info("delet: рейс с id = {}", id);
         tripService.deleteTrip(id);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TripFullDto getTripById(@PathVariable Long id) {
+    @Operation(summary = "получение информации об определенном рейсе")
+    public TripFullDto getTripById(@PathVariable @Parameter(description = "id рейса") Long id) {
+        log.info("get: рейс id = {}", id);
         return tripService.getTripById(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "получить информацию обо всех рейсах")
     public List<TripFullDto> getAllTrips() {
+        log.info("getAllTrips");
         return tripService.getAllTrips();
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TripFullDto patchTrip(@RequestBody @Validated TripUpdateDto dto, @PathVariable Long id) {
+    @Operation(summary = "внесение изменений в рейс")
+    public TripFullDto patchTrip(@RequestBody @Validated @Parameter(description = "dto обновление рейса")
+                                 TripUpdateDto dto, @PathVariable @Parameter(description = "id рейся для изменения")
+                                 Long id) {
+        log.info("patch: id {}, dto {}", id, dto);
         return tripService.updateTrip(dto, id);
     }
 }

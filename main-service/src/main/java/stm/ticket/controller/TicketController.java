@@ -1,5 +1,8 @@
 package stm.ticket.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,23 +22,38 @@ import static stm.util.Constants.DATE_TIME_PATTERN;
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "контроллер билетов", description = "поиск доступных билетов и их покупка")
 public class TicketController {
     private final TicketService ticketService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "поиск билетов",
+            description = "поиск всех доступных к покупке билетов по параметрам поиска")
     public List<TicketDto> getAllTickets(@RequestParam(required = false)
-                                         @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeStart,
+                                         @DateTimeFormat(pattern = DATE_TIME_PATTERN)
+                                         @Parameter(description = "начало даты поиска", example = "yyyy-MM-dd HH:mm")
+                                         LocalDateTime rangeStart,
                                          @RequestParam(required = false)
-                                         @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
-                                         @RequestParam(required = false) Long departurePointId,
-                                         @RequestParam(required = false) String departurePoint,
-                                         @RequestParam(required = false) Long destinationPointId,
-                                         @RequestParam(required = false) String destinationPoint,
-                                         @RequestParam(required = false) String carrier,
+                                         @DateTimeFormat(pattern = DATE_TIME_PATTERN)
+                                         @Parameter(description = "конец даты поиска", example = "yyyy-MM-dd HH:mm")
+                                         LocalDateTime rangeEnd,
+                                         @RequestParam(required = false)
+                                         @Parameter(description = "id точка отпавления") Long departurePointId,
+                                         @RequestParam(required = false)
+                                         @Parameter(description = "название точки отправления") String departurePoint,
+                                         @RequestParam(required = false)
+                                         @Parameter(description = "id точка назначения") Long destinationPointId,
+                                         @RequestParam(required = false)
+                                         @Parameter(description = "id точка назначения") String destinationPoint,
+                                         @RequestParam(required = false)
+                                         @Parameter(description = "название превозчика") String carrier,
                                          @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                          @Positive @RequestParam(defaultValue = "10") Integer size) {
-        log.info("запрос доступных билетов");
+        log.info("get запрос билетов: время от {}, время до {}, откуда id {}, откуда {}, куда id {}, куда {}," +
+                        "комапния {}, from {}, size {}",
+                rangeStart, rangeEnd, departurePointId, departurePoint, destinationPointId, destinationPoint,
+                carrier, from, size);
         return ticketService.getAllTickets(rangeStart, rangeEnd,
                 departurePointId, departurePoint,
                 destinationPointId, destinationPoint,
@@ -44,13 +62,20 @@ public class TicketController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TicketDto buyTicket(@RequestParam Long userId, Long ticketId) {
+    @Operation(summary = "покупка билета",
+            description = "купить определенный билет по id")
+    public TicketDto buyTicket(@RequestParam @Parameter(description = "id пользователя") Long userId,
+                               @RequestParam @Parameter(description = "id билета") Long ticketId) {
+        log.info("post: купить билет от userId = {}, билет = {}", userId, ticketId);
         return ticketService.buyTicket(userId, ticketId);
     }
 
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    public List<TicketDto> getUserTickets(@RequestParam Long id) {
+    @Operation(summary = "просмотр купленных билетов",
+            description = "посмотреть купленные билеты определенного пользователя")
+    public List<TicketDto> getUserTickets(@RequestParam @Parameter(description = "id пользователя") Long id) {
+        log.info("get: запрос купленныхь билетов пользователя id = {}", id);
         return ticketService.getUserTickets(id);
     }
 }
