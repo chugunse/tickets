@@ -56,3 +56,7 @@ create table if not exists ticket
     place_number int not null,
     constraint pk_ticket_id primary key (id)
 );
+
+CREATE INDEX carrier_company ON carrier (company);
+CREATE INDEX point_title ON point (title);
+create index trip_date ON trip (date_time);

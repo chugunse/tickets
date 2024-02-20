@@ -1,5 +1,6 @@
 package stm.trip.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import stm.route.model.Route;

@@ -12,7 +12,7 @@ import stm.trip.model.Trip;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-02-19T16:33:12+0300",
+    date = "2024-02-20T09:48:39+0300",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 11.0.18 (Amazon.com Inc.)"
 )
 @Component

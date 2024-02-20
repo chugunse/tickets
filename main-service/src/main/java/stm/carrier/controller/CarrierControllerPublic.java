@@ -1,6 +1,7 @@
 package stm.carrier.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class CarrierControllerPublic {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "посмотреть всех перевозчиков")
+    @ApiResponse(responseCode = "200", description = "Ok")
     public List<CarrierDto> getAllCarriers() {
         log.info("get: getAllCarriers");
         return carrierService.getAllCarriers();

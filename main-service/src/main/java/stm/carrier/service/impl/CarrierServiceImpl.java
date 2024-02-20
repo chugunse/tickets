@@ -82,6 +82,4 @@ public class CarrierServiceImpl implements CarrierService {
     public List<CarrierDto> getAllCarriers() {
         return carrierMapper.toCarrierDtoList(carrierRepository.getAll());
     }
-
-
 }

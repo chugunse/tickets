@@ -1,6 +1,7 @@
 package stm.trip.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,11 @@ public class TripControllerPublic {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "просмотр рейсов")
+    @ApiResponse(responseCode = "200", description = "Ok")
     public List<TripPublicDto> getAllTrips() {
         return tripService.getAllTripsToPublic();
     }
 }
+
+
+
