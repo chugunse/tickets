@@ -41,17 +41,6 @@ public class ErrorHandler {
                 .build();
     }
 
-//    @ExceptionHandler
-//    @ResponseStatus(code = HttpStatus.FORBIDDEN)
-//    public ApiError handlerForbidden(final ForbiddenException e) {
-//        return ApiError.builder()
-//                .message(e.getMessage())
-//                .reason("доступ запрещен")
-//                .status("Forbidden")
-//                .timestamp((LocalDateTime.now().format(Constants.formatter)))
-//                .build();
-//    }
-
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.CONFLICT)
     public ApiError handleViolationException(final DataIntegrityViolationException e) {
