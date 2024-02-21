@@ -27,7 +27,7 @@ import java.util.List;
 @Validated
 @Slf4j
 @Tag(name = "контроллер рейсов",
-        description = "управление рейсами")
+        description = "управление рейсами ДОСТУП ROLE_ADMIN")
 public class TripControllerAdmin {
     private final TripServiceImpl tripService;
 

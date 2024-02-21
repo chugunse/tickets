@@ -37,7 +37,7 @@ public class TicketController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "поиск билетов",
+    @Operation(summary = "поиск билетов ДОСТУП БЕЗ АВТОРИЗАЦИИ",
             description = "поиск всех доступных к покупке билетов по параметрам поиска")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
@@ -79,8 +79,8 @@ public class TicketController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "покупка билета",
-            description = "купить определенный билет по id")
+    @Operation(summary = "покупка билета ДОСТУП ROLE_USER",
+            description = "купить определенный билет")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created"),
             @ApiResponse(responseCode = "404", description = "Not found", content = {
@@ -102,7 +102,7 @@ public class TicketController {
 
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "просмотр купленных билетов",
+    @Operation(summary = "просмотр купленных билетов ДОСТУП ROLE_USER",
             description = "посмотреть купленные билеты определенного пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),

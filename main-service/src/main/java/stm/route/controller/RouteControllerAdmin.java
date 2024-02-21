@@ -24,7 +24,7 @@ import java.util.List;
 @Validated
 @Slf4j
 @Tag(name = "контроллер маршрутов",
-        description = "управление маршрутами")
+        description = "управление маршрутами ДОСТУП ROLE_ADMIN")
 public class RouteControllerAdmin {
     private final RouteService routeService;
 

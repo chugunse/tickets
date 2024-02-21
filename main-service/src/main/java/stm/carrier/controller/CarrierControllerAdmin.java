@@ -26,7 +26,7 @@ import java.util.List;
 @Validated
 @Slf4j
 @Tag(name = "контроллер перевозчиков админстратора",
-        description = "внесение изменений в фирмы перевозчики")
+        description = "внесение изменений в фирмы перевозчики ДОСТУП ROLE_ADMIN")
 public class CarrierControllerAdmin {
     private final CarrierService carrierService;
 

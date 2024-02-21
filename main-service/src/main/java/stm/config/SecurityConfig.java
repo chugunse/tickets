@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -24,7 +25,6 @@ import stm.auth.security.JwtTokenProvider;
 @RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
-    private final ApplicationContext applicationContext;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -71,7 +71,12 @@ public class SecurityConfig {
                         configurer.requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/users/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/tickets").hasRole("USER")
+                                .requestMatchers(HttpMethod.POST, "/tickets/user").hasRole("USER")
+                                .requestMatchers(HttpMethod.GET, "/tickets").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/trips").permitAll()
+                                .requestMatchers("/carriers").permitAll()
                                 .anyRequest().authenticated())
                 .anonymous(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

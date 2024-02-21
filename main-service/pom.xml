@@ -57,6 +57,7 @@
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
+            <version>3.1.2</version>
         </dependency>
         <dependency>
             <groupId>horns-and-hooves</groupId>
@@ -99,9 +100,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.baeldung.spring.kafka.KafkaApplication</mainClass>
-                </configuration>
+<!--                <configuration>-->
+<!--                    <mainClass>com.baeldung.spring.kafka.KafkaApplication</mainClass>-->
+<!--                </configuration>-->
             </plugin>
         </plugins>
     </build>

@@ -23,7 +23,7 @@ public class TripControllerPublic {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "просмотр рейсов")
+    @Operation(summary = "просмотр рейсов ДОСТУПЕН БЕЗ АВТОРИЗАЦИИ")
     @ApiResponse(responseCode = "200", description = "Ok")
     public List<TripPublicDto> getAllTrips() {
         return tripService.getAllTripsToPublic();

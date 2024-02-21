@@ -24,7 +24,7 @@ import stm.user.service.UserService;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "юзер контроллер", description = "контроллер управления пользователями")
+@Tag(name = "юзер контроллер", description = "контроллер управления пользователями ДОСТУПЕН ,БЕЗ АВТОРИЗАЦИИ")
 public class UserController {
     private final UserService userService;
     private final AuthService authService;
