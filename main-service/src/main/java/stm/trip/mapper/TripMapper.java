@@ -14,12 +14,15 @@ import java.util.List;
 public interface TripMapper {
     @Mapping(target = "route", ignore = true)
     @Mapping(target = "dateTime", dateFormat = "yyyy-MM-dd HH:mm")
+    @Mapping(target = "id", ignore = true)
     Trip toModel(TripNewDto dto);
 
     @Mapping(target = "dateTime", dateFormat = "yyyy-MM-dd HH:mm")
+    @Mapping(target = "sold", ignore = true)
     TripFullDto toFullDto(Trip model);
 
     List<TripFullDto> toFullDtoList(List<Trip> list);
 
+    @Mapping(target = "available", ignore = true)
     TripPublicDto toPublicDto(Trip trip);
 }

@@ -19,7 +19,7 @@ public class TripFullDto implements Serializable {
     private String title;
     @Schema(description = "маршрут")
     private Route route;
-    @Schema(description = "время рейса",example = "YYYY-MM-dd HH:mm")
+    @Schema(description = "время рейса", example = "YYYY-MM-dd HH:mm")
     private String dateTime;
     @Schema(description = "цена билета")
     private int price;
