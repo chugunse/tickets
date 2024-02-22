@@ -3,7 +3,6 @@ package stm.user.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,7 +61,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-//    @Cacheable(value = "UserService::getByLogin", key = "#login")
     public User getByLogin(String login) {
         try {
             return userRepository.getByLogin(login);

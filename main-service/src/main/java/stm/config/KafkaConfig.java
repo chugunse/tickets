@@ -30,13 +30,6 @@ public class KafkaConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-//    @Bean
-//    public KafkaAdmin kafkaAdmin() {
-//        Map<String, Object> configs = new HashMap<>();
-//        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-//        return new KafkaAdmin(configs);
-//    }
-
     @Bean
     public ProducerFactory<String, TicketSaveDto> producerFactory() {
         Map<String, Object> configProps = new HashMap<>(3);
@@ -58,8 +51,15 @@ public class KafkaConfig {
     }
 
     @Bean
-    public NewTopic createTopic() {
-        return TopicBuilder.name("tickets_topic")
+    public KafkaAdmin kafkaAdmin() {
+        Map<String, Object> configs = new HashMap<>();
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        return new KafkaAdmin(configs);
+    }
+
+    @Bean
+    public NewTopic topic1() {
+        return TopicBuilder.name("tickets-topic")
                 .partitions(1)
                 .replicas(1)
                 .config(TopicConfig.RETENTION_MS_CONFIG, String.valueOf(Duration.ofHours(1).toMillis()))
