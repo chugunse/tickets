@@ -2,9 +2,6 @@ package stm.route.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import stm.exception.model.ApiError;
 import stm.route.dto.PointDto;
 import stm.route.dto.RouteFullDto;
 import stm.route.dto.RouteNewDto;
@@ -28,7 +24,7 @@ import java.util.List;
 @Validated
 @Slf4j
 @Tag(name = "контроллер маршрутов",
-        description = "управление маршрутами")
+        description = "управление маршрутами ДОСТУП ROLE_ADMIN")
 public class RouteControllerAdmin {
     private final RouteService routeService;
 
@@ -37,16 +33,8 @@ public class RouteControllerAdmin {
     @Operation(summary = "добавление нового маршрута")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created"),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = {
-                    @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
-            }),
-            @ApiResponse(responseCode = "409", description = "Conflict", content = {
-                    @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
-            })
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "409", description = "Conflict")
     })
     public RouteFullDto addRoute(@RequestBody @Validated
                                  @Parameter(description = "dto нового маршрута") RouteNewDto dto) {
@@ -57,11 +45,7 @@ public class RouteControllerAdmin {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "удаление маршрута")
-    @ApiResponse(responseCode = "204", description = "No Content", content = {
-            @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
-    })
+    @ApiResponse(responseCode = "204", description = "No Content")
     public void deleteRoute(@PathVariable @Parameter(description = "id удаляемого маршрута") Long id) {
         log.info("delet route: id = {}", id);
         routeService.deleteRoute(id);
@@ -72,11 +56,7 @@ public class RouteControllerAdmin {
     @Operation(summary = "просмотр информации об определенном маршруте")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
-            @ApiResponse(responseCode = "404", description = "Not found", content = {
-                    @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
-            })
+            @ApiResponse(responseCode = "404", description = "Not found")
     })
     public RouteFullDto getRouteById(@PathVariable @Parameter(description = "id маршрута") Long id) {
         log.info("get route: id = {}", id);
@@ -97,21 +77,9 @@ public class RouteControllerAdmin {
     @Operation(summary = "обновление информации о маршруте")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
-            @ApiResponse(responseCode = "404", description = "Not found", content = {
-                    @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
-            }),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = {
-                    @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
-            }),
-            @ApiResponse(responseCode = "409", description = "Conflict", content = {
-                    @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
-            })
+            @ApiResponse(responseCode = "404", description = "Not found"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "409", description = "Conflict")
     })
     public RouteFullDto patchRoute(@PathVariable @Parameter(description = "id маршрута") Long id,
                                    @RequestBody @Validated
@@ -125,16 +93,8 @@ public class RouteControllerAdmin {
     @Operation(summary = "добавление отправной/конечной точки")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created"),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = {
-                    @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
-            }),
-            @ApiResponse(responseCode = "409", description = "Conflict", content = {
-                    @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
-            })
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "409", description = "Conflict")
     })
     public PointDto addPoint(@RequestBody @Validated
                              @Parameter(description = "dto отправной/конечной точки") PointDto dto) {

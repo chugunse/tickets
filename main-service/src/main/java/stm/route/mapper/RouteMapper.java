@@ -14,6 +14,8 @@ public interface RouteMapper {
     @Mapping(target = "duration", dateFormat = "HH:mm")
     @Mapping(target = "departurePoint", ignore = true)
     @Mapping(target = "destinationPoint", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "carrier", ignore = true)
     Route toRouteModel(RouteNewDto dto);
 
     @Mapping(target = "duration", dateFormat = "HH:mm")

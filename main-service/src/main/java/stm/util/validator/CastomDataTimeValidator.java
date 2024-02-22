@@ -1,9 +1,9 @@
 package stm.util.validator;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import stm.util.Constants;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDateTime;
 
 public class CastomDataTimeValidator implements ConstraintValidator<CastomDataTime, Object> {

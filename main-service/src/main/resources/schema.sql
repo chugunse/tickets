@@ -1,4 +1,4 @@
-drop table if exists carrier, point, route, trip, ticket, users;
+drop table if exists carrier, point, route, trip, ticket, users, users_roles;
 
 create table if not exists carrier
 (
@@ -57,6 +57,13 @@ create table if not exists ticket
     constraint pk_ticket_id primary key (id)
 );
 
-CREATE INDEX carrier_company ON carrier (company);
-CREATE INDEX point_title ON point (title);
-create index trip_date ON trip (date_time);
+create table if not exists users_roles
+(
+    user_id bigint       not null,
+    role    varchar(255) not null,
+    constraint fk_uses_roles_users foreign key (user_id) references users (id) on delete cascade
+);
+
+create index carrier_company on carrier (company);
+create index point_title on point (title);
+create index trip_date on trip (date_time);

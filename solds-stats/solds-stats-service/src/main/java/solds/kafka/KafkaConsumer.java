@@ -13,7 +13,7 @@ import solds.service.TicketSaveService;
 public class KafkaConsumer {
     private final TicketSaveService service;
 
-    @KafkaListener(topics = "tickets_topic", groupId = "group_id")
+    @KafkaListener(topics = "tickets-topic", groupId = "group_id")
     public void lesten(TicketSaveDto dto) {
         log.info("сохранение билета =" + dto);
         service.addTicket(dto);

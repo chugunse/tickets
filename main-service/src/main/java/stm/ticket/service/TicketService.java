@@ -1,5 +1,6 @@
 package stm.ticket.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import stm.ticket.dto.TicketDto;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public interface TicketService {
                                   Integer from,
                                   Integer size);
 
-    TicketDto buyTicket(Long userId, Long ticketId);
+    TicketDto buyTicket(Long ticketId, HttpServletRequest request);
 
-    List<TicketDto> getUserTickets(Long id);
+    List<TicketDto> getUserTickets(HttpServletRequest request);
 }

@@ -2,7 +2,6 @@ package stm.route.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,7 +100,7 @@ public class RouteServiceImpl implements RouteService {
                 old.setDestinationPoint(map.get(dto.getDestinationPoint()));
             } else {
                 log.warn("пункт назначения с id= {} не найден", dto.getDestinationPoint());
-                throw new ResourceNotFoundException("пункт назначения с id= " + dto.getDestinationPoint()+ "не найден");
+                throw new ResourceNotFoundException("пункт назначения с id= " + dto.getDestinationPoint() + "не найден");
             }
         }
         ofNullable(dto.getDuration()).ifPresent(old::setDuration);
@@ -122,10 +121,10 @@ public class RouteServiceImpl implements RouteService {
         return pointMapper.toDto(point);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    @Cacheable(value = "RouteService::getAllPoints")
     public List<PointDto> getAllPoints() {
+        log.debug("берем points из бд");
         List<Point> list = routeRepository.getAllPoints();
         return pointMapper.toDtoList(list);
     }

@@ -4,6 +4,7 @@ services:
   ticket-service:
     build: main-service
     image: main-service
+    restart: always
     container_name: main-service
     ports:
       - "8080:8080"
@@ -16,9 +17,10 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
-      - SPRING_REDIS_HOST=redis
-      - SPRING_REDIS_PORT=6379
-      - SPRING_REDIS_DATABASE=0
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PASSWORD=YnNic2Juc2xzbmprc2JudnNla2pi
+      - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_DATABASE=0
 
   tickets-db:
     image: postgres:14-alpine
@@ -42,9 +44,11 @@ services:
 
   redis:
     image: redis:latest
+    restart: always
     container_name: redis
     ports:
       - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass YnNic2Juc2xzbmprc2JudnNla2pi
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -75,6 +79,7 @@ services:
   solds-stats-service:
     build: solds-stats/solds-stats-service
     image: solds-stats-service
+    restart: always
     container_name: solds-stats
     depends_on:
       - solds-db

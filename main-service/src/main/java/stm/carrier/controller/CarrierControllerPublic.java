@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("carriers")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "публичный контроллер перевозчиков")
+@Tag(name = "публичный контроллер перевозчиков", description = "ДОСТУПЕН БЕЗ АВТОРИЗАЦИИ")
 public class CarrierControllerPublic {
     private final CarrierService carrierService;
 

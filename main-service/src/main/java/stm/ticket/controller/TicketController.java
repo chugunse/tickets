@@ -8,17 +8,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import stm.exception.model.ApiError;
 import stm.ticket.dto.TicketDto;
 import stm.ticket.service.TicketService;
 
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +37,7 @@ public class TicketController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "поиск билетов",
+    @Operation(summary = "поиск билетов ДОСТУП БЕЗ АВТОРИЗАЦИИ",
             description = "поиск всех доступных к покупке билетов по параметрам поиска")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
@@ -76,8 +79,8 @@ public class TicketController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "покупка билета",
-            description = "купить определенный билет по id")
+    @Operation(summary = "покупка билета ДОСТУП ROLE_USER",
+            description = "купить определенный билет")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created"),
             @ApiResponse(responseCode = "404", description = "Not found", content = {
@@ -91,15 +94,15 @@ public class TicketController {
                             array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
             })
     })
-    public TicketDto buyTicket(@RequestParam @Parameter(description = "id пользователя") Long userId,
-                               @RequestParam @Parameter(description = "id билета") Long ticketId) {
-        log.info("post: купить билет от userId = {}, билет = {}", userId, ticketId);
-        return ticketService.buyTicket(userId, ticketId);
+    public TicketDto buyTicket(@RequestParam @Parameter(description = "id билета") Long ticketId,
+                               HttpServletRequest request) {
+        log.info("post: купить билет = {}", ticketId);
+        return ticketService.buyTicket(ticketId, request);
     }
 
     @GetMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "просмотр купленных билетов",
+    @Operation(summary = "просмотр купленных билетов ДОСТУП ROLE_USER",
             description = "посмотреть купленные билеты определенного пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ok"),
@@ -109,8 +112,8 @@ public class TicketController {
                             array = @ArraySchema(schema = @Schema(implementation = ApiError.class)))
             })
     })
-    public List<TicketDto> getUserTickets(@RequestParam @Parameter(description = "id пользователя") Long id) {
-        log.info("get: запрос купленныхь билетов пользователя id = {}", id);
-        return ticketService.getUserTickets(id);
+    public List<TicketDto> getUserTickets(HttpServletRequest request) {
+        log.info("get: запрос купленных билетов");
+        return ticketService.getUserTickets(request);
     }
 }

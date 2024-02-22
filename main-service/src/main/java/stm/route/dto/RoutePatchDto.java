@@ -1,12 +1,11 @@
 package stm.route.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @Getter

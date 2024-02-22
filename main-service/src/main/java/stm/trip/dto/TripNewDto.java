@@ -1,12 +1,11 @@
 package stm.trip.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import stm.util.validator.CastomDataTime;
-
-import javax.validation.constraints.*;
 
 @NoArgsConstructor
 @Getter
@@ -25,7 +24,7 @@ public class TripNewDto {
             message = "неверный формат даты/времени рейса (YYYY-MM-dd HH:mm)")
     @CastomDataTime(message = "время рейса не может быть раньше," +
             " чем через два часа от текущего момента", delay = 2)
-    @Schema(description = "время рейса",example = "YYYY-MM-dd HH:mm")
+    @Schema(description = "время рейса", example = "YYYY-MM-dd HH:mm")
     private String dateTime;
     @Positive
     @NotNull

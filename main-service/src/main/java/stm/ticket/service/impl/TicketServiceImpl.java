@@ -1,6 +1,7 @@
 package stm.ticket.service.impl;
 
 import dto.TicketSaveDto;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,7 +18,7 @@ import stm.ticket.model.Ticket;
 import stm.ticket.service.TicketService;
 import stm.ticket.storage.TicketRepository;
 import stm.user.model.User;
-import stm.user.storage.UserRepository;
+import stm.user.service.UserService;
 import stm.util.Constants;
 
 import java.time.Duration;
@@ -38,8 +39,7 @@ public class TicketServiceImpl implements TicketService {
     private final RedisTemplate<String, List<TicketDto>> redisTemplate;
 
     private final KafkaProducer kafkaProducer;
-
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Transactional
     @Override
@@ -66,30 +66,24 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
-    public TicketDto buyTicket(Long userId, Long ticketId) {
+    public TicketDto buyTicket(Long ticketId, HttpServletRequest request) {
         Ticket ticket;
-        User user;
+        User user = userService.getByLogin(request.getUserPrincipal().getName());
         try {
             ticket = ticketRepository.getTicket(ticketId);
         } catch (EmptyResultDataAccessException exception) {
             log.warn("билет не найден либо продан");
             throw new ResourceNotFoundException("билет не найден либо продан");
         }
-        try {
-            user = userRepository.getById(userId);
-        } catch (EmptyResultDataAccessException exception) {
-            log.warn("покупатель с id = {} не найден", userId);
-            throw new ResourceNotFoundException("покупатель с id = " + userId + " не найден");
-        }
-        ticketRepository.ticketSetUser(ticketId, userId);
+        ticketRepository.ticketSetUser(ticketId, user.getId());
         TicketDto ticketDto = ticketMapper.toTicketDto(ticket);
         List<TicketDto> list = new ArrayList<>();
         try {
-            list.addAll(Objects.requireNonNull(redisTemplate.opsForValue().get(CASH_USER_TICKETS + userId)));
+            list.addAll(Objects.requireNonNull(redisTemplate.opsForValue().get(CASH_USER_TICKETS + user.getId())));
         } catch (NullPointerException ignored) {
         }
         list.add(ticketDto);
-        redisTemplate.opsForValue().set(CASH_USER_TICKETS + userId, list, cashDuretion);
+        redisTemplate.opsForValue().set(CASH_USER_TICKETS + user.getId(), list, cashDuretion);
         kafkaProducer.send(TicketSaveDto.builder()
                 .id(ticket.getId())
                 .buyersFullName(user.getFullName())
@@ -108,16 +102,18 @@ public class TicketServiceImpl implements TicketService {
 
     @Transactional
     @Override
-    public List<TicketDto> getUserTickets(Long id) {
+    public List<TicketDto> getUserTickets(HttpServletRequest request) {
+        Long userId = userService.getByLogin(request.getUserPrincipal().getName()).getId();
         List<TicketDto> list;
         try {
-            list = new ArrayList<>(Objects.requireNonNull(redisTemplate.opsForValue().get(CASH_USER_TICKETS + id)));
+            list = new ArrayList<>(Objects.requireNonNull(redisTemplate.opsForValue().get(CASH_USER_TICKETS + userId)));
             return list;
         } catch (NullPointerException ignored) {
         }
         try {
-            list = ticketMapper.toTicketDtoList(ticketRepository.getUserTickets(id));
-            redisTemplate.opsForValue().set(CASH_USER_TICKETS + id, list, cashDuretion);
+            log.debug("достаем билеты из базы!!!");
+            list = ticketMapper.toTicketDtoList(ticketRepository.getUserTickets(userId));
+            redisTemplate.opsForValue().set(CASH_USER_TICKETS + userId, list, cashDuretion);
             return list;
         } catch (EmptyResultDataAccessException exception) {
             log.warn("у пользователя нет купленных билетов");
